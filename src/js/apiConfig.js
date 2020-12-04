@@ -1,0 +1,5 @@
+export const TASKS_BASE_URL="https://googletasksraygorodskijv1.p.rapidapi.com/clearTaskList"
+export const API_KEY="1566d87a06msh8e3ba34c3ef55f6p1089d8jsna00edc1169b0"
+export const BOOKS_BASE_URL="https://barcode-lookup.p.rapidapi.com/v2/products"
+export const GOODREADS_API_KEY="ggPvDYmXuXUpf0yEoHPQQQ"
+export const GOODREADS_API_SECRET="uyYWaiarnINI1QPSOxRwOcWL2RBeDrcyH5tvfM"

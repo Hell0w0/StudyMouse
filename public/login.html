@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyBQgAGR2jgG52DT_iMMKAYV87UowWabkHQ",
+        authDomain: "studymouse-c539a.firebaseapp.com",
+        databaseURL: "https://studymouse-c539a.firebaseio.com",
+        projectId: "studymouse-c539a",
+        storageBucket: "studymouse-c539a.appspot.com",
+        messagingSenderId: "503177314168",
+        appId: "1:503177314168:web:1ad9e4e406fd19f474128d"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
+    <script type="text/javascript">
+      // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: 'index.html#home',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        ]
+      };
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      var user = firebase.auth().currentUser;
+      if(user){
+        window.location = 'index.html#home';
+      } else{
+        ui.start('#firebaseui-auth-container', uiConfig);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="login">
+      <h1>StudyMouse</h1>
+      <div id="firebaseui-auth-container"></div>
+    </div>
+  </body>
+</html>
