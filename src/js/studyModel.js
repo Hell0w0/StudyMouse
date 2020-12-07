@@ -61,9 +61,7 @@ export class StudyModel{
       this.courses[k] = list[k].courses;
       this.deadlines[k] = list[k].deadlines;
       this.comments[k] = list[k].comments;
-
   }
-
      this.updateCourses();
    }
 
@@ -77,7 +75,6 @@ export class StudyModel{
      if (course==this.currentCourse)
         this.currentCourse=null
      this.notifyObservers();
-
    }
 
     setCurrentCourse(course){
@@ -94,15 +91,16 @@ export class StudyModel{
       this.notifyObservers();
     }
 
-    removeDeadline(deadline){
-      const index=this.getCourseIndex(deadline[0]);
-      const itemIndex = this.deadlines[index].findIndex(ele => ele==deadline);
 
-      if (index > -1) {
-        this.deadlines[index].splice(itemIndex,1);
-      }
-      this.notifyObservers();
-    }
+   removeDeadline(deadline){
+     const index=this.getCourseIndex(deadline[0]);
+     const itemIndex = this.deadlines[index].findIndex(ele => ele==deadline);
+
+     if (index > -1) {
+       this.deadlines[index].splice(itemIndex,1);
+     }
+     this.notifyObservers();
+   }
 
     addComment(text){
       //Currentcourse är namnet på valda kursen
@@ -121,40 +119,38 @@ export class StudyModel{
 
        }
       this.notifyObservers();
-
-
     }
 
-    removeComment(com){
-      const index=this.getCourseIndex(this.currentCourse);
-      const itemIndex = this.comments[index].findIndex(ele => ele==com);
+   removeComment(com){
+     const index=this.getCourseIndex(this.currentCourse);
+     const itemIndex = this.comments[index].findIndex(ele => ele==com);
 
-      if (index > -1) {
-        this.comments[index].splice(itemIndex,1);
-      }
-      this.notifyObservers();
-    }
+     if (index > -1) {
+       this.comments[index].splice(itemIndex,1);
+     }
+     this.notifyObservers();
+   }
 
-    getCourseIndex(name){
-          const course = this.courses.findIndex(ele => ele==name);
-          return course
-      }
+   getCourseIndex(name){
+         const course = this.courses.findIndex(ele => ele==name);
+         return course
+     }
 
-      getAllDeadlines(){
-        var deadlineList=[];
-        // deadlines     [courseName,Name,Date]
-        this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
-        if (deadlineList.length==0){
-          return []
-        }
-        deadlineList.sort(function(a,b){
-          if(a[2]<b[2])
-            return -1;
-          else if(a[2]>b[2])
-            return 1;
-        })
-        return deadlineList
-      }
+   getAllDeadlines(){
+     var deadlineList=[];
+     // deadlines     [courseName,Name,Date]
+     this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
+     if (deadlineList.length==0){
+       return []
+     }
+     deadlineList.sort(function(a,b){
+         if(a[2]<b[2])
+           return -1;
+         else if(a[2]>b[2])
+           return 1;
+       })
+     return deadlineList
+   }
 
   addObserver(callback){
    this.subscribers=this.subscribers.concat(callback);
@@ -169,20 +165,16 @@ export class StudyModel{
   }
 
   sortList(list){
-//element[1] == [courseName,namn,date]
-const sorted=list
-sorted.sort(function(a,b){
-    if(a<b)
-      return -1;
-    else if(a>b)
-      return 1;
-  })
-return sorted;
-}
-
-sortAllDeadlines(list){
+  //element[1] == [courseName,namn,date]
   const sorted=list
 
   return sorted;
 }
+
+  sortAllDeadlines(list){
+    const sorted=list
+
+    return sorted;
+  }
+
 }

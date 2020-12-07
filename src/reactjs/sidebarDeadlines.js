@@ -44,11 +44,11 @@ export default function SidebarDeadlines({model,err}) {
     return allDeadline
   }
 
-
   const [deadlinesList, setDeadlinesList] = React.useState(getCourses());
   React.useEffect(function(){
      setDeadlinesList(getCourses());
   }, [deadlines,sidebarType]);
+
 
 return h(SidebarDeadlinesView, {
 noCourses:noCourses,

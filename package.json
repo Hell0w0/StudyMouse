@@ -19,6 +19,7 @@
     "react-firebaseui": "^4.1.0",
     "react-google-calendar-api": "^1.2.1",
     "react-script-tag": "^1.1.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "readline": "^1.3.0",
     "typescript": "^4.1.2",
