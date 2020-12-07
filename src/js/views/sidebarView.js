@@ -1,21 +1,4 @@
-/*
-const SidebarView=({moveHome,moveCourses,moveBooks, logOut})=>
-<div>
-<span onClick={()=>moveHome()}><img src="icon.png" width="80"></img></span>
-  <div class="sidebarBtn">
-  <button onClick={()=>moveHome()}>Home</button>
-  </div>
-  <div class="sidebarBtn">
-  <button onClick={()=>moveCourses()}>Courses</button>
-  </div>
-  <div class="sidebarBtn">
-  <button onClick={()=>moveBooks()}>All books</button>
-  </div>
-  <div class="sidebarBtn">
-  <button onClick={()=>logOut()}>log out</button>
-  </div>
-</div>
-*/
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';

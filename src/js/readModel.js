@@ -13,4 +13,11 @@ function setDB(userId, model){
   firebase.database().ref('users/' + userId).set({
     study_model: modelObject
   });
+
+  model.courses.forEach((item, i) => {
+    var modelComment = JSON.stringify(model.comments[i]);
+    firebase.database().ref('courses/' + item).set({
+      comments: modelComment
+    });
+  });
 }

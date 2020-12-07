@@ -9,7 +9,6 @@ export default function Course({model,viewNav}) {
   const h= React.createElement;
   const courses = useModelProp(model, "courses");
 
-
   return h(CourseView, {
   onText:(nam)=> {setName(nam);courses.forEach(ele=>{
     if(ele==name){

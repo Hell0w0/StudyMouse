@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {SidebarView} from './../js/views/sidebarView.js';
 import firebase from './../js/firebase.js';
 
-export function Sidebar({model,moveHome,moveCourses,moveBooks}) {
+export function Sidebar({moveHome,moveCourses,moveBooks}) {
   const h= React.createElement;
   let currentIndex=0;
   if (window.location.hash =="#home"){
