@@ -1,11 +1,11 @@
 /* global gapi */
 
 import {API_KEY} from './apiConfig.js';
-import {readModel} from './readModel.js'
+import {CLIENT_ID} from './apiConfig.js';
+import {readModel} from './readModel.js';
 
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 const SCOPES = "https://www.googleapis.com/auth/calendar";
-var CLIENT_ID = '503177314168-ou1dlf73eij9a0rim7k3l5n67t9cs9kn.apps.googleusercontent.com';
 
 const CalendarSource={
   handleClientLoad(){

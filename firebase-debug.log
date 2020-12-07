@@ -1,0 +1,60 @@
+[debug] [2020-12-07T18:52:42.184Z] ----------------------------------------------------------------------
+[debug] [2020-12-07T18:52:42.187Z] Command:       C:\Users\William\DOWNLO~1\firebase-tools-instant-win.exe C:\Users\William\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase deploy
+[debug] [2020-12-07T18:52:42.187Z] CLI Version:   8.16.2
+[debug] [2020-12-07T18:52:42.187Z] Platform:      win32
+[debug] [2020-12-07T18:52:42.187Z] Node Version:  v12.18.1
+[debug] [2020-12-07T18:52:42.188Z] Time:          Mon Dec 07 2020 19:52:42 GMT+0100 (GMT+01:00)
+[debug] [2020-12-07T18:52:42.189Z] ----------------------------------------------------------------------
+[debug] [2020-12-07T18:52:42.189Z]
+[debug] [2020-12-07T18:52:42.197Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-12-07T18:52:42.198Z] > authorizing via signed-in user
+[debug] [2020-12-07T18:52:42.198Z] [iam] checking project studymouse-c539a for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-12-07T18:52:42.204Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/studymouse-c539a:testIamPermissions
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-12-07T18:52:42.980Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 07 Dec 2020 18:52:43 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=736","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-12-07T18:52:42.982Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/studymouse-c539a
+
+[debug] [2020-12-07T18:52:43.117Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 07 Dec 2020 18:52:43 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info]
+[info] === Deploying to 'studymouse-c539a'...
+[info]
+[info] i  deploying hosting
+[debug] [2020-12-07T18:52:43.123Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/studymouse-c539a/versions
+ {"config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2020-12-07T18:52:44.561Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 07 Dec 2020 18:52:45 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  hosting[studymouse-c539a]: beginning deploy...
+[info] i  hosting[studymouse-c539a]: found 11 files in public
+[debug] [2020-12-07T18:52:44.578Z] [hosting] hash cache [cHVibGlj] stored for 11 files
+[debug] [2020-12-07T18:52:44.578Z] [hosting][hash queue][FINAL] {"max":2,"min":0,"avg":0,"active":0,"complete":11,"success":11,"errored":0,"retried":0,"total":11,"elapsed":4}
+[debug] [2020-12-07T18:52:44.578Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/studymouse-c539a/versions/37a51d57342a64ea:populateFiles
+ <request body omitted>
+[debug] [2020-12-07T18:52:45.674Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 07 Dec 2020 18:52:46 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-12-07T18:52:45.675Z] [hosting][populate queue][FINAL] {"max":1098,"min":1098,"avg":1098,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1099}
+[debug] [2020-12-07T18:52:45.675Z] [hosting] uploads queued: 0
+[debug] [2020-12-07T18:52:45.675Z] [hosting][upload queue][FINAL] {"max":0,"min":9999999999,"avg":0,"active":0,"complete":0,"success":0,"errored":0,"retried":0,"total":0,"elapsed":1607367165675}
+[info] +  hosting[studymouse-c539a]: file upload complete
+[debug] [2020-12-07T18:52:45.676Z] [hosting] deploy completed after 1113ms
+[debug] [2020-12-07T18:52:45.710Z] [
+  {
+    "config": {
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "studymouse-c539a"
+    },
+    "site": "studymouse-c539a",
+    "version": "sites/studymouse-c539a/versions/37a51d57342a64ea"
+  }
+]
+[info] i  hosting[studymouse-c539a]: finalizing version...
+[debug] [2020-12-07T18:52:45.711Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/sites/studymouse-c539a/versions/37a51d57342a64ea?updateMask=status
+ {"status":"FINALIZED"}
+[debug] [2020-12-07T18:52:46.748Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 07 Dec 2020 18:52:47 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-12-07T18:52:46.748Z] [hosting] finalized version for studymouse-c539a: {"name":"sites/studymouse-c539a/versions/37a51d57342a64ea","status":"FINALIZED","config":{},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2020-12-07T18:52:44.519132Z","createUser":{"email":"williamaxb@gmail.com"},"finalizeTime":"2020-12-07T18:52:47.274352Z","finalizeUser":{"email":"williamaxb@gmail.com"}}
+[info] +  hosting[studymouse-c539a]: version finalized
+[info] i  hosting[studymouse-c539a]: releasing new version...
+[debug] [2020-12-07T18:52:46.750Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/studymouse-c539a/releases?version_name=sites/studymouse-c539a/versions/37a51d57342a64ea
+ {"message":null}
