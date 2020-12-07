@@ -4,42 +4,68 @@ import useModelProp from './useModelProp.js';
 
 
  export default function SidebarDeadlines({model,err}) {
-   const [open, setOpen] = React.useState(false);
    const coursesList = useModelProp(model,"courses");
    const deadlines = useModelProp(model,"deadlines");
    const currentCourse = useModelProp(model,"currentCourse");
-   const [sidebarType,setSidebarType] = React.useState("All");
+   const [name,setName]= React.useState("");
+   const [date,setDate]= React.useState("");
+   const [courseType,setCourseType]= React.useState(coursesList[0]);
+   const [sidebarType,setSidebarType]= React.useState("All");
+   const [invalidDate,setInvalidDate]= React.useState(true);
+   const [invalidName,setInvalidName]= React.useState(true);
+   const [noCourses,setNoCourses] = React.useState(false);
+
    const h= React.createElement;
 
     /*Const from create deadline*/
 
   let today = new Date().toISOString().slice(0, 10)
-   const [name,setName]= React.useState("");
-   const [date,setDate]= React.useState("");
-   const [courseType,setCourseType]= React.useState(currentCourse ? currentCourse : coursesList[0]);
-   const [invalidDate,setInvalidDate]= React.useState(true);
-   const [invalidName,setInvalidName]= React.useState(true);
 
+/* Makes sure courseType is updated when currentcourse is chnaged*/
+    React.useEffect(function(){
+      if (currentCourse!=courseType)
+       setCourseType(currentCourse);
+    }, [currentCourse]);
 
-    /* Updates the sidebar deadlineList based on chosen Course*/
+    React.useEffect(function(){
+      if (coursesList.length==0)
+        setNoCourses(true);
+      else {
+        setNoCourses(false);
+      }
+    },[coursesList])
+
 
  // Getcourseindex return -1 if name == All
    function getCourses() {
      const index = model.getCourseIndex(sidebarType);
-     if (index >= 0 && deadlines[index].length>0) return deadlines[index];
-     else if (index >=0) { return undefined};
-     return model.getAllDeadlines();
+     if (index >= 0) return deadlines[index];
+     let allDeadline=model.getAllDeadlines();
+     return allDeadline
    }
 
-      const [deadlinesList, setDeadlinesList] = React.useState(getCourses());
 
+   const [deadlinesList, setDeadlinesList] = React.useState(getCourses());
+   React.useEffect(function(){
+      setDeadlinesList(getCourses());
+   }, [deadlines,sidebarType]);
 
 return h(SidebarDeadlinesView, {
-handleClose:()=>setOpen(false),
-today:today,
-handleClickOpen:()=>setOpen(true),
-handleCloseAdd:()=>{setOpen(false);model.addDeadline(name,date,courseType)},
-open:open,
+noCourses:noCourses,
+courseType:courseType,
+type:sidebarType,
+deadlines:deadlinesList,
+courses:coursesList,
+onCreate:()=>{
+  model.addDeadline(name,date,courseType);
+  setDate("");
+  setName("");
+  setInvalidName(true);
+  setInvalidDate(true);
+
+},
+onCourseType:(cou)=>{setCourseType(cou)},
+onType: tp =>{setSidebarType(tp)},
 onRemove:(e)=>model.removeDeadline(e),
 onName:(nam)=> {
   if (nam!=""){
@@ -49,11 +75,7 @@ onDate:(dat)=> {
   if (ValidateDate(dat,today)) {
     setInvalidDate(false);
     setDate(dat)}},
-onCourseType:(cou)=>setCourseType(cou),
-onType: type => setSidebarType(type),
-type:courseType,
-deadlines:deadlinesList,
-courses:coursesList,
+today:today,
 invalidName:invalidName,
 invalidDate:invalidDate,
 

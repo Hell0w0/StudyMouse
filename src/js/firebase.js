@@ -1,4 +1,4 @@
-import firebaseui from 'firebaseui'
+import firebase from 'firebase'
 
 const config = ({
   apiKey: "AIzaSyBQgAGR2jgG52DT_iMMKAYV87UowWabkHQ",
@@ -7,28 +7,12 @@ const config = ({
   projectId: "studymouse-c539a",
   storageBucket: "studymouse-c539a.appspot.com",
   messagingSenderId: "503177314168",
-  appId: "1:503177314168:web:1ad9e4e406fd19f474128d"})
-
-// This is our firebaseui configuration object
-const uiConfig = ({
-  signInSuccessUrl: '#home',
-  signInOptions: [
-    window.firebase.auth.EmailAuthProvider.PROVIDER_ID
-    window.firebase.auth.GoogleAuthProvider.PROVIDER_ID
-  ],
-  tosUrl: '/terms-of-service' // This doesn't exist yet
+  appId: "1:503177314168:web:1ad9e4e406fd19f474128d"
 })
 
+
 // This must run before any other firebase functions
-window.firebase.initializeApp(config)
+firebase.initializeApp(config)
 
-// This sets up firebaseui
-const ui = new firebaseui.auth.AuthUI(window.firebase.auth())
 
-// This adds firebaseui to the page
-// It does everything else on its own
-const startFirebaseUI = function (elementId) {
-  ui.start(elementId, uiConfig)
-}
-
-export startFirebaseUI
+export default firebase

@@ -27,6 +27,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  small:{
+    fullWidth: false,
+  },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
@@ -54,8 +58,12 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export const SidebarDeadlinesView=({today,courses,type,onType,onRemove,onDate,onCourseType,deadlines,open,handleClose,handleCloseAdd,handleClickOpen,onName,invalidName,invalidDate})=> {
+export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidName,invalidDate})=> {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  function handleClose(){setOpen(false)}
+  function handleClickOpen(){setOpen(true)}
+  function handleCloseAdd(){setOpen(false);onCreate()}
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -85,7 +93,7 @@ export const SidebarDeadlinesView=({today,courses,type,onType,onRemove,onDate,on
       >
 
         <div className={classes.toolbar} />
-        <Button onClick={handleClickOpen} variant="outlined">Add deadline</Button>
+        <Button onClick={handleClickOpen} variant="outlined" disabled={noCourses}>Add deadline</Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">New deadline</DialogTitle>
               <DialogContent>
@@ -118,14 +126,18 @@ export const SidebarDeadlinesView=({today,courses,type,onType,onRemove,onDate,on
                     Course
                   </InputLabel>
                   <Select
+                    value={courseType}
                     labelId="demo-simple-select-placeholder-label-label"
                     id="demo-simple-select-placeholder-label"
                     onChange={(event)=>{onCourseType(event.target.value)}}
-                    displayEmpty
                   >
-                  {courses.map((name)=>{ 
-                    <MenuItem>{name}</MenuItem>
-                  })}
+                  {courses.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+
+
                   </Select>
                 </FormControl>
               </DialogContent>
@@ -139,32 +151,55 @@ export const SidebarDeadlinesView=({today,courses,type,onType,onRemove,onDate,on
               </DialogActions>
             </Dialog>
         <Divider />
+        <div>
+        Filter:
+        <span> </span>
+        <Select
+          labelId="select"
+          id="select"
+          value={type}
+          onChange={(event)=>{onType(event.target.value)}}
+        >
+        <MenuItem key="All" value="All" align="center">All</MenuItem>
+        {courses.map((option) => (
+          <MenuItem key={option} value={option} align="center">
+            {option}
+          </MenuItem>
+        ))}
+        </Select>
+        </div>
         <TableContainer component={Paper}>
-     <Table aria-label="simple table">
-       <TableHead>
-         <TableRow>
-           <TableCell>Course</TableCell>
-           <TableCell align="right">Name</TableCell>
-           <TableCell align="right">Deadline</TableCell>
-         </TableRow>
-       </TableHead>
-       <TableBody>
-         {deadlines.map((row) => (
-           <TableRow key={row}>
-           <TableCell component="th" scope="row">
-             {row[0]}
-           </TableCell>
-             <TableCell component="th" scope="row">
-               {row[1]}
-             </TableCell>
-             <TableCell component="th" scope="row">
-              {row[2]}
-             </TableCell>
-           </TableRow>
-         ))}
-       </TableBody>
-     </Table>
-   </TableContainer>
+         <Table aria-label="simple table">
+           <TableHead>
+             <TableRow>
+               <TableCell>Course</TableCell>
+               <TableCell align="right">Name</TableCell>
+               <TableCell align="right">Deadline</TableCell>
+               <TableCell> </TableCell>
+             </TableRow>
+           </TableHead>
+           <TableBody>
+             {deadlines.map((row) => (
+               <TableRow key={row}>
+               <TableCell component="th" scope="row">
+                 {row[0]}
+               </TableCell>
+                 <TableCell component="th" scope="row">
+                   {row[1]}
+                 </TableCell>
+                 <TableCell component="th" scope="row">
+                  {row[2]}
+                 </TableCell>
+                 <TableCell>
+                 <Button onClick={()=>{onRemove(row)}} className={classes.small}>
+                   <DeleteIcon className={classes.icon} />
+                 </Button>
+                 </TableCell>
+               </TableRow>
+          ))}
+           </TableBody>
+         </Table>
+        </TableContainer>
       </Drawer>
     </div>
   );

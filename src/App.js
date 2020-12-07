@@ -9,6 +9,7 @@ import SidebarDeadlines from './reactjs/sidebarDeadlines.js';
 import {CustomError} from './reactjs/error.js';
 
 
+
 const App = ({model}) =>
 
 <div>
@@ -22,7 +23,6 @@ const App = ({model}) =>
   <div><SidebarDeadlines model={model} err={errNav}/></div>
 
 </div>
-
 
 window.addEventListener("hashchange",()=> {defaultRoute()})
 

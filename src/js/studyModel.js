@@ -72,19 +72,21 @@ export class StudyModel{
       this.notifyObservers();
     }
 
-   addDeadline(name,date,courseName){
+    addDeadline(name,date,courseName){
 
-     const courseIndex = this.getCourseIndex(courseName);
-     // this.deadlines[courseIndex] ger en lista [[courseName,name,date]]
-     this.deadlines=[[courseName,name,date],...this.deadlines];
-     this.deadlines=this.sortDeadline(this.deadlines)
-     this.notifyObservers();
-   }
+      const index = this.getCourseIndex(courseName);
+      // this.deadlines[courseIndex] ger en lista [[courseName,name,date]]
+      this.deadlines[index]=[[courseName,name,date],...this.deadlines[index]];
+      this.deadlines[index]=this.sortList(this.deadlines[index])
+      this.notifyObservers();
+    }
 
    removeDeadline(deadline){
      const index=this.getCourseIndex(deadline[0]);
+     const itemIndex = this.deadlines[index].findIndex(ele => ele==deadline);
+
      if (index > -1) {
-       this.deadlines.splice(index, 1);
+       this.deadlines[index].splice(itemIndex,1);
      }
      this.notifyObservers();
    }
@@ -112,9 +114,10 @@ export class StudyModel{
 
    removeComment(com){
      const index=this.getCourseIndex(this.currentCourse);
+     const itemIndex = this.comments[index].findIndex(ele => ele==com);
 
      if (index > -1) {
-       this.comments[index].splice(index, 1);
+       this.comments[index].splice(itemIndex,1);
      }
      this.notifyObservers();
    }
@@ -127,11 +130,17 @@ export class StudyModel{
    getAllDeadlines(){
      var deadlineList=[];
      // deadlines     [courseName,Name,Date]
-     this.deadlines.map(elemen => elemen.forEach(ele=>deadlineList=[ele,...deadlineList]));
+     this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
      if (deadlineList.length==0){
        return []
      }
-     return this.sortDeadline(deadlineList)
+     deadlineList.sort(function(a,b){
+         if(a[2]<b[2])
+           return -1;
+         else if(a[2]>b[2])
+           return 1;
+       })
+     return deadlineList
    }
 
   addObserver(callback){
@@ -146,7 +155,7 @@ export class StudyModel{
         console.error("Error ", err, callback);}})
   }
 
-  sortDeadline(list){
+  sortList(list){
   //element[1] == [courseName,namn,date]
   const sorted=list
   sorted.sort(function(a,b){
@@ -157,4 +166,11 @@ export class StudyModel{
     })
   return sorted;
 }
+
+  sortAllDeadlines(list){
+    const sorted=list
+
+    return sorted;
+  }
+
 }
