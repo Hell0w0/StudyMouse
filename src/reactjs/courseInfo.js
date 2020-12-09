@@ -13,7 +13,7 @@ export default function CourseInfo({model,coursesNav,errorNav}) {
 
 
 if (courseName == null){
-errorNav()
+coursesNav()
 return false
  };
 

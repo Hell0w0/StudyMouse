@@ -1,7 +1,7 @@
 import firebase from './firebase.js'
 
 export class StudyModel{
-    constructor(courses=[],comments=[],deadlines=[],currentCourse=null){
+    constructor(courses=[],comments=[],deadlines=[[]],currentCourse=null){
         this.courses=courses;
         this.subscribers=[];
         this.deadlines=deadlines;
@@ -18,9 +18,24 @@ export class StudyModel{
       if(dbString!==null && dbString !== undefined){
         modelObject=JSON.parse(dbString.study_model);
         this.comments = modelObject.comments;
+        if(modelObject.comments!=undefined){
+          this.comments = modelObject.comments;
+        } else {this.comments=[];}
         this.currentCourse = modelObject.currentCourse;
-        this.deadlines =modelObject.deadlines;
-        this.courses = modelObject.courses;
+        if(modelObject.deadlines!=undefined){
+          this.deadlines =modelObject.deadlines;
+        } else {this.deadlines=[[]];}
+        if(modelObject.courses!=undefined){
+          this.courses = modelObject.courses;
+        } else {this.courses=[];}
+      }
+      //När sidan laddas finns det 4 subscribers och då laddar man om sidan
+      //för att lägga in de nyinladdade kurserna som hämtats. Sedan lägger man
+      //till setDB observern för att uppdatera till DB korrekt.
+      if(this.subscribers.length==4){
+        this.notifyObservers();
+        this.addObserver(()=>this.setDB(userId));
+        //this.notifyObservers();
       }
     });
     this.updateCourses();
@@ -40,29 +55,43 @@ export class StudyModel{
     });
   });
 }
+setDB(userId){
+  let modelObject = JSON.stringify(this);
+  firebase.database().ref('users/' + userId).set({
+    study_model: modelObject
+  });
 
+  this.courses.forEach((item, i) => {
+    var modelComment = JSON.stringify(this.comments[i]);
+    firebase.database().ref('courses/' + item).set({
+      comments: modelComment
+    });
+  });
+}
   addCourse(name){
-     this.courses=[name, ...this.courses];
-     this.deadlines=[[], ...this.deadlines];
-     this.comments=[[], ...this.comments];
-     //1) combine the arrays:
-  var list = [];
-  for (var j = 0; j < this.courses.length; j++)
-      list.push({'courses': this.courses[j], 'deadlines': this.deadlines[j], 'comments': this.comments[j]});
+    if(!this.courses.includes(name)){
+      this.courses=[name, ...this.courses];
+      this.deadlines=[[], ...this.deadlines];
+      this.comments=[[], ...this.comments];
+      //1) combine the arrays:
+      var list = [];
+      for (var j = 0; j < this.courses.length; j++)
+        list.push({'courses': this.courses[j], 'deadlines': this.deadlines[j], 'comments': this.comments[j]});
 
-  //2) sort:
-  list.sort(function(a, b) {
-      return ((a.courses < b.courses) ? -1 : ((a.courses == b.courses) ? 0 : 1));
+        //2) sort:
+      list.sort(function(a, b) {
+        return ((a.courses < b.courses) ? -1 : ((a.courses == b.courses) ? 0 : 1));
       //Sort could be modified to, for example, sort on the age
       // if the name is the same.
-  });
+    });
   //3) separate them back out:
   for (var k = 0; k < list.length; k++) {
       this.courses[k] = list[k].courses;
       this.deadlines[k] = list[k].deadlines;
       this.comments[k] = list[k].comments;
+    }
+    this.updateCourses();
   }
-     this.updateCourses();
    }
 
    removeCourse(course){
@@ -139,7 +168,9 @@ export class StudyModel{
    getAllDeadlines(){
      var deadlineList=[];
      // deadlines     [courseName,Name,Date]
-     this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
+     if(this.deadlines!=undefined){
+       this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
+      }
      if (deadlineList.length==0){
        return []
      }

@@ -9,18 +9,20 @@ export default function Course({model,viewNav}) {
   const h= React.createElement;
   const courses = useModelProp(model, "courses");
 
-  return h(CourseView, {
+
+
+  return  h(CourseView, {
   onText:(nam)=> {setName(nam);courses.forEach(ele=>{
     if(ele==name){
     setInvalidName(true)}})},
-  addCourse:()=> {model.addCourse(name)},
+  addCourse:()=> {model.addCourse(name)  },
   courses:courses,
   invalidName:invalidName,
-  remove:(e)=>{model.removeCourse(e)},
+  remove:(e)=>{  model.removeCourse(e)},
   handleClose:()=>setOpen(false),
   handleClickOpen:()=>setOpen(true),
   handleCloseAdd:()=>{setOpen(false);model.addCourse(name)},
   open:open,
-  goTo:(course)=>{model.setCurrentCourse(course); viewNav()},
+  goTo:(course)=>{model.setCurrentCourse(course); viewNav()}
   });
   }

@@ -9,8 +9,6 @@ const SCOPES = "https://www.googleapis.com/auth/calendar";
 
 const CalendarSource={
   handleClientLoad(){
-    //gapi.server.setApiKey(API_KEY);
-
     gapi.load('client:auth2', initClient);
   }
 }
@@ -60,7 +58,7 @@ function  updateCalender() {
         }
         eventSummary =[event.summary, ...eventSummary]
         eventSummary =[event.start.dateTime, ...eventSummary]
-        eventSummary =[event.start.description, ...eventSummary]
+        eventSummary =[event.description, ...eventSummary]
       }
     }
     const model = readModel();

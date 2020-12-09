@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut})=> {
+export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, canvasCourses})=> {
   const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = React.useState(currentIndex);
 
@@ -84,11 +84,17 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut})
             <ListItemText primary="Books" />
           </ListItem>
           <Divider />
-
           <ListItem
             button
             selected={selectedIndex === 3}
-            onClick={(event) => handleListItemClick(event, 3), logOut}
+            onClick={(event) => handleListItemClick(event, 3), canvasCourses}
+          >
+            <ListItemText primary="Sync Canvas" />
+          </ListItem>
+          <ListItem
+            button
+            selected={selectedIndex === 3}
+            onClick={(event) => handleListItemClick(event, 4), logOut}
           >
             <ListItemText primary="Logout" />
           </ListItem>
