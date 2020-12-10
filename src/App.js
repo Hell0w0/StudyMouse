@@ -6,6 +6,7 @@ import Home from './reactjs/home.js';
 import Course from './reactjs/course.js';
 import CourseInfo from './reactjs/courseInfo.js';
 import SidebarDeadlines from './reactjs/sidebarDeadlines.js';
+import Settings from './reactjs/settings.js';
 import {CustomError} from './reactjs/error.js';
 
 
@@ -17,6 +18,7 @@ const App = ({model}) =>
   <div><Sidebar model={model} moveHome={homeNav} moveCourses={coursesNav} moveBooks={bookNav}/></div>
 
   <Show hash="#home" ><div><Home model={model}/></div></Show>
+  <Show hash="#settings"><div><Settings model={model}/></div></Show>
   <Show hash="#courses" ><div><Course model={model} viewNav={viewNav}/></div></Show>
   <Show hash="#course" ><div><CourseInfo model={model} coursesNav={coursesNav} errorNav={errNav}/></div></Show>
   <Show hash="#error" ><div><CustomError home={homeNav}/></div></Show>
@@ -35,7 +37,7 @@ const homeNav=()=> window.location.hash="#home";
 defaultRoute();
 
 export function defaultRoute(){
-    if(!["#error","#course","#home","#createcomment","#createcommentoverview","#createdeadline","#createcourse", "#courses"].find(knownRoute=>
+    if(!["#error","#course","#home","#createcomment","#createcommentoverview","#createdeadline","#createcourse", "#courses", "#settings"].find(knownRoute=>
     knownRoute==window.location.hash))
 	window.location.hash="#home";
 }

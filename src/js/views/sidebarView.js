@@ -89,11 +89,11 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, 
             selected={selectedIndex === 3}
             onClick={(event) => handleListItemClick(event, 3), canvasCourses}
           >
-            <ListItemText primary="Sync Canvas" />
+            <ListItemText primary="Settings" />
           </ListItem>
           <ListItem
             button
-            selected={selectedIndex === 3}
+            selected={selectedIndex === 4}
             onClick={(event) => handleListItemClick(event, 4), logOut}
           >
             <ListItemText primary="Logout" />

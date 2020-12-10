@@ -57,17 +57,17 @@ const CanvasSource={
   },
 
   customGetSelf(CUSTOM_API_KEY){
-    return this.apiCall(CANVAS_API_DOMAIN + "/users/self", CUSTOM_API_KEY)
+    return this.customAPICall(CANVAS_API_DOMAIN + "/users/self", CUSTOM_API_KEY)
     .then(data=>data)
   },
 
   customGetCourses(CUSTOM_API_KEY){
-    return this.apiCall(CANVAS_API_DOMAIN + "/courses", CUSTOM_API_KEY)
+    return this.customAPICall(CANVAS_API_DOMAIN + "/courses", CUSTOM_API_KEY)
     .then(data=>data)
   },
 
   customGetFavouriteCourses(CUSTOM_API_KEY){
-    return this.apiCall(CANVAS_API_DOMAIN + "/users/self/favorites/courses", CUSTOM_API_KEY)
+    return this.customAPICall(CANVAS_API_DOMAIN + "/users/self/favorites/courses", CUSTOM_API_KEY)
     .then(data=>data)
   }
 }

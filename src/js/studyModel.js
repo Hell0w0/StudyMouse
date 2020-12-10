@@ -1,12 +1,13 @@
 import firebase from './firebase.js'
 
 export class StudyModel{
-    constructor(courses=[],comments=[],deadlines=[[]],currentCourse=null){
+    constructor(courses=[],comments=[],deadlines=[[]],currentCourse=null,books=[]){
         this.courses=courses;
         this.subscribers=[];
         this.deadlines=deadlines;
         this.comments=comments;
         this.currentCourse=currentCourse;
+        this.books=books;
        }
 
   updateModel(userId){
@@ -28,6 +29,9 @@ export class StudyModel{
         if(modelObject.courses!=undefined){
           this.courses = modelObject.courses;
         } else {this.courses=[];}
+        if(modelObject.books!=undefined){
+          this.books = modelObject.books;
+        } else {this.books=[];}
       }
       //När sidan laddas finns det 4 subscribers och då laddar man om sidan
       //för att lägga in de nyinladdade kurserna som hämtats. Sedan lägger man
@@ -68,6 +72,12 @@ setDB(userId){
     });
   });
 }
+
+addBook(name, img, course){
+  this.books=[[name, img, course, []],...this.books]
+}
+
+
   addCourse(name){
     if(!this.courses.includes(name)){
       this.courses=[name, ...this.courses];
