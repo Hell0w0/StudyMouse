@@ -93,6 +93,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                         onChange={(event)=>onText(event.target.value)}
                         autoFocus
                         error={invalidName}
+                        helperText={invalidName?'Course already added':''}
 
                         margin="dense"
                         id="name"
@@ -105,7 +106,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                       <Button onClick={handleClose} color="primary">
                         Cancel
                       </Button>
-                      <Button onClick={handleCloseAdd} color="primary">
+                      <Button onClick={handleCloseAdd} disabled={invalidName} color="primary">
                         Add
                       </Button>
                     </DialogActions>

@@ -9,7 +9,7 @@ import useModelProp from './useModelProp.js';
    const currentCourse = useModelProp(model,"currentCourse");
    const [name,setName]= React.useState("");
    const [date,setDate]= React.useState("");
-   const [courseType,setCourseType]= React.useState(coursesList[0]);
+   const [courseType,setCourseType]= React.useState();
    const [sidebarType,setSidebarType]= React.useState("All");
    const [invalidDate,setInvalidDate]= React.useState(true);
    const [invalidName,setInvalidName]= React.useState(true);
@@ -23,9 +23,14 @@ import useModelProp from './useModelProp.js';
 
 /* Makes sure courseType is updated when currentcourse is chnaged*/
     React.useEffect(function(){
-      if (currentCourse!=courseType)
+      if (currentCourse!=null && currentCourse!=courseType)
        setCourseType(currentCourse);
     }, [currentCourse]);
+
+    React.useEffect(function(){
+      setCourseType(coursesList[0]);
+    },[coursesList[0]])
+
 
     React.useEffect(function(){
       if (coursesList.length==0)
@@ -34,7 +39,6 @@ import useModelProp from './useModelProp.js';
         setNoCourses(false);
       }
     },[coursesList])
-
 
  // Getcourseindex return -1 if name == All
    function getCourses() {
@@ -62,11 +66,10 @@ onCreate:()=>{
   setName("");
   setInvalidName(true);
   setInvalidDate(true);
-
 },
-onCourseType:(cou)=>{setCourseType(cou)},
-onType: tp =>{setSidebarType(tp)},
-onRemove:(e)=>model.removeDeadline(e),
+onCourseType:cou=>setCourseType(cou),
+onType: tp =>setSidebarType(tp),
+onRemove:e=>model.removeDeadline(e),
 onName:(nam)=> {
   if (nam!=""){
   setInvalidName(false);
@@ -78,7 +81,6 @@ onDate:(dat)=> {
 today:today,
 invalidName:invalidName,
 invalidDate:invalidDate,
-
 });
 
 }

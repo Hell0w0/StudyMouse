@@ -10,9 +10,14 @@ export default function Course({model,viewNav}) {
   const courses = useModelProp(model, "courses");
 
   return h(CourseView, {
-  onText:(nam)=> {setName(nam);courses.forEach(ele=>{
-    if(ele==name){
-    setInvalidName(true)}})},
+  onText:(nam)=> {setName(nam);
+    courses.forEach(ele=>{
+    if(ele===nam){
+    setInvalidName(true)}
+    else{
+      setInvalidName(false)
+    }
+  })},
   addCourse:()=> {model.addCourse(name)},
   courses:courses,
   invalidName:invalidName,

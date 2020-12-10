@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
     <script>
@@ -40,8 +44,11 @@
   </head>
   <body>
     <div class="login">
-      <h1>StudyMouse</h1>
-      <div id="firebaseui-auth-container"></div>
+      <div class="loginTitle">
+      <h1>Study Mouse</h1>
+    </div>
+      <div class="fire" id="firebaseui-auth-container"></div>
+      <div class="info">The best way to keep track of your studies</div>
     </div>
   </body>
 </html>
