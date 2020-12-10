@@ -21,11 +21,11 @@ export default function Course({model,viewNav}) {
   addCourse:()=> {model.addCourse(name)},
   courses:courses,
   invalidName:invalidName,
-  remove:(e)=>{model.removeCourse(e)},
+  remove:(e)=>{  model.removeCourse(e)},
   handleClose:()=>setOpen(false),
   handleClickOpen:()=>setOpen(true),
   handleCloseAdd:()=>{setOpen(false);model.addCourse(name)},
   open:open,
-  goTo:(course)=>{model.setCurrentCourse(course); viewNav()},
+  goTo:(course)=>{model.setCurrentCourse(course); viewNav()}
   });
   }

@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+**/*Config.js*
+server.py
 # dependencies
 /node_modules
 /.pnp

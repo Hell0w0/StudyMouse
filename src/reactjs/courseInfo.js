@@ -12,7 +12,7 @@ export default function CourseInfo({model,coursesNav,errorNav}) {
 
 
 if (courseName == null){
-errorNav()
+coursesNav()
 return false
  };
 
@@ -37,10 +37,10 @@ return h(CourseInfoView, {
   unChecked:unChecked,
   onText:(nam)=>{
       comments.forEach(ele=>{
-      if(ele===nam)
-      setInvalidName(true)
+      if(ele[0]===nam)
+      setInvalidName(true);
       else{
-        setInvalidName(false)
+        setInvalidName(false);
         setName(nam)}
       })},
   invalidName:invalidName,

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function usePromise(promise) {
+function usePromiseXML(promise) {
   const [data, setData]= React.useState(null);
   const [error, setError]=React.useState(null);
   React.useEffect(()=>{
@@ -61,4 +61,4 @@ function xmlToJson(xml) {
 	return obj;
 };
 
-export default usePromise;
+export default usePromiseXML;

@@ -8,14 +8,21 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
+    "dotenv": "^8.2.0",
     "firebase": "^8.1.1",
     "firebaseauth": "^1.0.0",
     "firebaseui": "^4.7.1",
+    "fs": "0.0.1-security",
+    "googleapis": "^39.2.0",
+    "node-canvas-api": "^1.6.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-firebaseui": "^4.1.0",
+    "react-google-calendar-api": "^1.2.1",
     "react-router-dom": "^5.2.0",
+    "react-script-tag": "^1.1.2",
     "react-scripts": "4.0.1",
+    "readline": "^1.3.0",
     "typescript": "^4.1.2",
     "web-vitals": "^0.2.4"
   },
@@ -42,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-disable": "^2.0.1"
   }
 }
