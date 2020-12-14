@@ -18,13 +18,11 @@ import {drawerWidth} from './../layoutVars.js';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -45,9 +43,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  small:{
-    fullWidth: false,
-  },
+
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
@@ -62,7 +58,8 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
-  function handleClickOpen(){setOpen(true)}
+  function handleClickOpen(){
+    setOpen(true)}
   function handleCloseAdd(){setOpen(false);onCreate()}
   return (
     <div className={classes.root}>
@@ -107,6 +104,8 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
                   id="name"
                   type="text"
                   fullWidth
+                  error={invalidName}
+                  helperText={invalidName?'Empty field':''}
                 />
                 <InputLabel shrink id="date">
                   Date
@@ -119,6 +118,8 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
                   min={today}
                   id="date"
                   type="date"
+                  error={invalidDate}
+                  helperText={invalidDate?'Invalid input':''}
                   fullWidth
                 />
                 <FormControl className={classes.formControl}>
@@ -175,7 +176,7 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
                <TableCell>Course</TableCell>
                <TableCell align="right">Name</TableCell>
                <TableCell align="right">Deadline</TableCell>
-               <TableCell> </TableCell>
+               <TableCell  className={classes.small}> </TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
@@ -190,8 +191,8 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
                  <TableCell component="th" scope="row">
                   {row[2]}
                  </TableCell>
-                 <TableCell>
-                 <Button onClick={()=>{onRemove(row)}} className={classes.small}>
+                 <TableCell  className={classes.small}>
+                 <Button onClick={()=>{onRemove(row)}} size="small">
                    <DeleteIcon className={classes.icon} />
                  </Button>
                  </TableCell>

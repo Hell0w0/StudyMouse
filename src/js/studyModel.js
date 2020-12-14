@@ -8,6 +8,7 @@ export class StudyModel{
         this.comments=comments;
         this.currentCourse=currentCourse;
         this.books=books;
+        this.bool=true;
        }
 
   updateModel(userId){
@@ -19,27 +20,27 @@ export class StudyModel{
       if(dbString!==null && dbString !== undefined){
         modelObject=JSON.parse(dbString.study_model);
         this.comments = modelObject.comments;
-        if(modelObject.comments!=undefined){
+        if(modelObject.comments!==undefined){
           this.comments = modelObject.comments;
         } else {this.comments=[];}
         this.currentCourse = modelObject.currentCourse;
-        if(modelObject.deadlines!=undefined){
+        if(modelObject.deadlines!==undefined){
           this.deadlines =modelObject.deadlines;
         } else {this.deadlines=[[]];}
-        if(modelObject.courses!=undefined){
+        if(modelObject.courses!==undefined){
           this.courses = modelObject.courses;
         } else {this.courses=[];}
-        if(modelObject.books!=undefined){
+        if(modelObject.books!==undefined){
           this.books = modelObject.books;
         } else {this.books=[];}
       }
       //När sidan laddas finns det 4 subscribers och då laddar man om sidan
       //för att lägga in de nyinladdade kurserna som hämtats. Sedan lägger man
       //till setDB observern för att uppdatera till DB korrekt.
-      if(this.subscribers.length==4){
+      if(this.bool){
         this.notifyObservers();
-        this.addObserver(()=>this.setDB(userId));
-        //this.notifyObservers();
+        this.addObserver(() => this.setDB(userId));
+        this.bool=false;
       }
     });
     this.updateCourses();
@@ -55,7 +56,7 @@ export class StudyModel{
         modelComments=JSON.parse(dbString.comments);
         this.comments[i] = modelComments;
       }
-      if(i==this.courses.length-1) { this.notifyObservers();}
+      if(i===this.courses.length-1) { this.notifyObservers();}
     });
   });
 }
@@ -90,7 +91,7 @@ addBook(name, img, course){
 
         //2) sort:
       list.sort(function(a, b) {
-        return ((a.courses < b.courses) ? -1 : ((a.courses == b.courses) ? 0 : 1));
+        return ((a.courses < b.courses) ? -1 : ((a.courses === b.courses) ? 0 : 1));
       //Sort could be modified to, for example, sort on the age
       // if the name is the same.
     });
@@ -111,7 +112,7 @@ addBook(name, img, course){
       this.deadlines.splice(index, 1);
       this.comments.splice(index, 1);
     }
-     if (course==this.currentCourse)
+     if (course===this.currentCourse)
         this.currentCourse=null
      this.notifyObservers();
    }
@@ -127,17 +128,23 @@ addBook(name, img, course){
       // this.deadlines[courseIndex] ger en lista [[courseName,name,date]]
       this.deadlines[index]=[[courseName,name,date],...this.deadlines[index]];
       this.deadlines[index]=this.sortList(this.deadlines[index])
+      //dont touch or everything breaks
+      this.deadlines=[...this.deadlines];
       this.notifyObservers();
     }
 
 
    removeDeadline(deadline){
-     const index=this.getCourseIndex(deadline[0]);
-     const itemIndex = this.deadlines[index].findIndex(ele => ele==deadline);
 
-     if (index > -1) {
+     const index=this.getCourseIndex(deadline[0]);
+     const itemIndex = this.deadlines[index].findIndex(function(item){
+       return item===deadline;
+     });
+
+     if (itemIndex > -1) {
        this.deadlines[index].splice(itemIndex,1);
      }
+     this.deadlines=[...this.deadlines];
      this.notifyObservers();
    }
 
@@ -150,8 +157,8 @@ addBook(name, img, course){
 
     checkBox(value){
       const index=this.getCourseIndex(this.currentCourse);
-      const commentIndex = this.comments[index].findIndex(ele => ele[0]==value[0]);
-      if (this.comments[index][commentIndex][1]==true)
+      const commentIndex = this.comments[index].findIndex(ele => ele[0]===value[0]);
+      if (this.comments[index][commentIndex][1]===true)
        this.comments[index][commentIndex][1]=false;
        else{
          this.comments[index][commentIndex][1]=true;
@@ -162,7 +169,7 @@ addBook(name, img, course){
 
    removeComment(com){
      const index=this.getCourseIndex(this.currentCourse);
-     const itemIndex = this.comments[index].findIndex(ele => ele==com);
+     const itemIndex = this.comments[index].findIndex(ele => ele===com);
 
      if (index > -1) {
        this.comments[index].splice(itemIndex,1);
@@ -171,17 +178,17 @@ addBook(name, img, course){
    }
 
    getCourseIndex(name){
-         const course = this.courses.findIndex(ele => ele==name);
+         const course = this.courses.findIndex(ele => ele===name);
          return course
      }
 
    getAllDeadlines(){
      var deadlineList=[];
      // deadlines     [courseName,Name,Date]
-     if(this.deadlines!=undefined){
+     if(this.deadlines!==undefined){
        this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
       }
-     if (deadlineList.length==0){
+     if (deadlineList.length===0){
        return []
      }
      deadlineList.sort(function(a,b){
@@ -197,7 +204,7 @@ addBook(name, img, course){
    this.subscribers=this.subscribers.concat(callback);
   }
   removeObserver(obs){
-  this.subscribers=this.subscribers.filter(o=>o!=obs);
+  this.subscribers=this.subscribers.filter(o=>o!==obs);
  }
   notifyObservers(){
     this.subscribers.forEach(callback=> {
@@ -206,7 +213,7 @@ addBook(name, img, course){
   }
 
   sortList(list){
-  //element[1] == [courseName,namn,date]
+  //element[1] === [courseName,namn,date]
   const sorted=list
 
   return sorted;

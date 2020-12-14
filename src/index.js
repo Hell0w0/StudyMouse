@@ -8,7 +8,6 @@ import firebase from './js/firebase.js';
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     const  model= readModel();
-    console.log(model)
     ReactDOM.render(<App model={model}/>, document.getElementById("root"))
   } else {
       window.location='login.html'

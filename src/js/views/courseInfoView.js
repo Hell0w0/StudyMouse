@@ -1,14 +1,11 @@
 
   import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -20,17 +17,15 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 
 
 import {drawerWidth} from './../layoutVars.js';
 import {sidebarWidth} from './../layoutVars.js';
-import {commentsWidth} from './../layoutVars.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,16 +59,20 @@ const useStyles = makeStyles((theme) => ({
   flexDirection: 'column',
 },
 check:{
-  backgroundColor: fade('#555555', 0.06),
+  backgroundColor: alpha('#555555', 0.06),
 
 },
 }));
 
 
 
-export const CourseInfoView= ({h,checked,unChecked,name,onText,onCheck,handleClose,handleCloseAdd,handleClickOpen,open,onRemove,nav}) =>{
+export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checked,unChecked,name,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
   const classes = useStyles();
-
+  const [open, setOpen] = React.useState(false);
+  function handleClose(){setOpen(false)}
+  function handleClickOpen(){
+    setOpen(true)}
+  function handleCloseAdd(){setOpen(false);onCreateCourseInfo()}
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -112,20 +111,22 @@ export const CourseInfoView= ({h,checked,unChecked,name,onText,onCheck,handleClo
                        <DialogTitle id="form-dialog-title">Add a To-Do</DialogTitle>
                        <DialogContent>
                          <TextField
-                           onChange={(event)=>onText(event.target.value)}
+                           onChange={(event)=>onTextCourseInfo(event.target.value)}
                            autoFocus
                            margin="dense"
                            id="name"
                            label="Name"
                            type="text"
                            fullWidth
+                           error={invalidNameCourseInfo}
+                           helperText={invalidNameCourseInfo?'Name taken':''}
                          />
                        </DialogContent>
                        <DialogActions>
                          <Button onClick={handleClose} color="primary">
                            Cancel
                          </Button>
-                         <Button onClick={handleCloseAdd} color="primary">
+                         <Button onClick={handleCloseAdd} disabled={invalidNameCourseInfo}color="primary">
                            Add
                          </Button>
                        </DialogActions>
@@ -146,7 +147,7 @@ export const CourseInfoView= ({h,checked,unChecked,name,onText,onCheck,handleClo
                              />
                            </ListItemIcon>
                            <ListItemText id={labelId} primary={value[0]} />
-                           <Button onClick={()=>{onRemove(value)}}>
+                           <Button onClick={()=>{onRemoveCourseInfo(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
                          </ListItem>
@@ -166,7 +167,7 @@ export const CourseInfoView= ({h,checked,unChecked,name,onText,onCheck,handleClo
                              />
                            </ListItemIcon>
                            <ListItemText id={labelId} primary={value[0]} />
-                           <Button onClick={()=>{onRemove(value)}}>
+                           <Button onClick={()=>{onRemoveCourseInfo(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
                          </ListItem>

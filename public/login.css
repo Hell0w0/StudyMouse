@@ -1,0 +1,25 @@
+.loginTitle{
+  text-align: center;
+
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.login{
+  margin: 200px 0;
+text-align: center;
+
+}
+
+.fire{
+  border: solid;
+  margin:0 auto;
+  display: inline-block;
+
+}
+
+.info{
+  font-family: 'Roboto', sans-serif;
+
+  padding-top: 20px;
+}

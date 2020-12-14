@@ -2,17 +2,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import {sidebarWidth} from './../layoutVars.js';
 
 
@@ -41,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, canvasCourses})=> {
+export const SidebarView=({moveHome,moveCourses, currentIndex,logOut, canvasCourses,profilePicture})=> {
   const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = React.useState(currentIndex);
 
@@ -63,26 +56,19 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, 
           <ListItem
             button
             selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, 0), moveHome}
+            onClick={(event) => {handleListItemClick(event, 0); moveHome()}}
           >
             <ListItemText primary="Home" />
           </ListItem>
           <ListItem
             button
             selected={selectedIndex === 1}
-            onClick={(event) => handleListItemClick(event, 1),moveCourses}
+            onClick={(event) =>{ handleListItemClick(event, 1); moveCourses()}}
           >
             <ListItemText primary="Courses" />
           </ListItem>
         </List>
         <List component="nav" aria-label="secondary mailbox folder">
-          <ListItem
-            button
-            selected={selectedIndex === 2}
-            onClick={(event) => handleListItemClick(event, 2), moveBooks}
-          >
-            <ListItemText primary="Books" />
-          </ListItem>
           <Divider />
           <ListItem
             button
@@ -99,6 +85,7 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, 
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
+
         </Drawer>
 
       </div>

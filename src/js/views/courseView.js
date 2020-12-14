@@ -63,7 +63,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
   }));
 
 
-  export const CourseView=({onText,addCourse,courses,remove,invalidName,open,handleClose,handleCloseAdd,handleClickOpen,goTo})=> {
+  export const CourseView=({onTextCourse,addCourse,courses,remove,invalidNameCourse,open,handleClose,handleCloseAdd,handleClickOpen,goTo})=> {
     const classes = useStyles();
     return (
       <React.Fragment>
@@ -90,9 +90,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                     <DialogTitle id="form-dialog-title">Add new course</DialogTitle>
                     <DialogContent>
                       <TextField
-                        onChange={(event)=>onText(event.target.value)}
+                        onChange={(event)=>onTextCourse(event.target.value)}
                         autoFocus
-                        error={invalidName}
+                        error={invalidNameCourse}
+                        helperText={invalidNameCourse?'Course already added':''}
 
                         margin="dense"
                         id="name"
@@ -105,7 +106,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                       <Button onClick={handleClose} color="primary">
                         Cancel
                       </Button>
-                      <Button onClick={handleCloseAdd} color="primary">
+                      <Button onClick={handleCloseAdd} disabled={invalidNameCourse} color="primary">
                         Add
                       </Button>
                     </DialogActions>

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 function usePromiseJSON(promise) {
   const [data, setData]= React.useState(null);
@@ -8,7 +7,7 @@ function usePromiseJSON(promise) {
      setData(null);
      setError(null);
   if (promise!=null){
-       promise.then(data=>setData(JSON.parse(data))).catch(error=>setError(error));
+       promise.then(data=>{setData(JSON.parse(data)); console.log("API data loaded")}).catch(error=>setError(error));
      }
   else{
     return undefined;

@@ -1,9 +1,7 @@
 import {CustomErrorView} from './../js/views/errorView.js';
-import React from 'react';
+import GlueToModel from './glue.js'
 
-export function CustomError({home}) {
-  const h= React.createElement;
-
-return h(CustomErrorView, {
-onHome:()=>{home()}});
+function CustomError(){
+  return GlueToModel(CustomErrorView);
 }
+export default CustomError;

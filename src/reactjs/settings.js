@@ -1,11 +1,11 @@
 import {SettingsView} from './../js/views/settingsView.js';
-import useModelProp from './useModelProp.js';
 import React from 'react';
 import CanvasSource from '../js/canvasSource.js';
 import usePromiseJSON from './usePromiseJSON.js';
-import promiseNoData from '../js/views/promiseNoData.js';
+import ModelContext from './modelContext.js';
 
-function Settings({model}){
+function Settings(){
+  const model=React.useContext(ModelContext);
   const h= React.createElement;
   const [promise, setPromise]= React.useState(CanvasSource.getCourses());
   const [data, error]= usePromiseJSON(promise);
