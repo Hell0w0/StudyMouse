@@ -62,13 +62,13 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
   }));
 
 
-  export const CourseView=({onText,latest,addCourse,courses,remove,name,invalidName,onCreate,goTo})=> {
+  export const CourseView=({onTextCourse,latest,addCourse,onCreateCourse,courses,remove,invalidNameCourse,goTo})=> {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [toRemove, setRemove] = React.useState(null);
     function handleClose(){setOpen(false)}
     function handleClickOpen(){setOpen(true)}
-    function handleCloseAdd(){setOpen(false);onCreate()}
+    function handleCloseAdd(){setOpen(false);onCreateCourse()}
     const [openVarning, setOpenVarning] = React.useState(false);
     function handleCloseVarning(){setOpenVarning(false)}
     function handleVarning(){setOpenVarning(true)}
@@ -97,10 +97,10 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
                     <DialogTitle id="form-dialog-title">Add new course</DialogTitle>
                     <DialogContent>
                       <TextField
-                        onChange={(event)=>onText(event.target.value)}
+                        onChange={(event)=>onTextCourse(event.target.value)}
                         autoFocus
-                        error={invalidName}
-                        helperText={invalidName?'Course already added':''}
+                        error={invalidNameCourse}
+                        helperText={invalidNameCourse?'Course already added':''}
                         onKeyPress={(ev) => {
                            if (ev.key === 'Enter' && !invalidName) {
                                handleCloseAdd()
@@ -117,7 +117,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
                       <Button onClick={handleClose} color="primary">
                         Cancel
                       </Button>
-                      <Button onClick={handleCloseAdd} disabled={invalidName} color="primary">
+                      <Button onClick={handleCloseAdd} disabled={invalidNameCourse} color="primary">
                         Add
                       </Button>
                     </DialogActions>
@@ -130,7 +130,6 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
               {courses.map((card) => (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <Card className={classes.card} style={{background:latest===card?fade('#555555', 0.06):"primary"}}>
-
                     <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h5" component="h2" style={{ wordWrap: "break-word" }}>
                         {card}

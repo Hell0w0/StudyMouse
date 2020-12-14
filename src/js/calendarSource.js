@@ -66,7 +66,7 @@ function  updateCalender() {
     deadlines.forEach(item => {
       if(item[0]!=null&&item[1]!=null&&item[2]!=null){
       var newEvent = createEvent(item[1], item[2], item[0]);
-      if(!(eventSummary.includes(newEvent.summary)&&eventSummary.includes(newEvent.description)&&eventSummary.includes(newEvent.start.dateTime))){
+      if(!(eventSummary.includes(newEvent.summary)&&eventSummary.includes(newEvent.description)&&eventSummary.includes(newEvent.start.date))){
         postEvent(newEvent);
       }
     }
@@ -80,11 +80,11 @@ function createEvent(name, date, course){
     'colorId': "10",
     'description': course,
     'start': {
-      'dateTime': date+'T09:00:00+01:00',
+      'date': date,
       'timeZone': 'Europe/Stockholm'
     },
     'end': {
-      'dateTime': date+'T17:00:00+01:00',
+      'date': date,
       'timeZone': 'Europe/Stockholm'
     }
   }

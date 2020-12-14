@@ -71,13 +71,13 @@ check:{
 
 
 
-export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadlineRemove,unChecked,name,onText,onCheck,onRemove,nav}) =>{
+export const CourseInfoView= ({h,invalidNameCourseInfo,deadlines,onCreateCourseInfo,checked,onDeadlineRemove,unChecked,courseInfoName,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
   function handleClickOpen(){
     setOpen(true)}
-  function handleCloseAdd(){setOpen(false);onCreate()}
+  function handleCloseAdd(){setOpen(false);onCreateCourseInfo()}
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -87,7 +87,7 @@ export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadli
           <ArrowBackIosIcon className={classes.icon} />
         </Button>
           <Typography variant="h6" noWrap>
-            {name}
+            {courseInfoName}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -99,7 +99,7 @@ export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadli
                <Grid item xs={12} md={6} lg={5}>
                  <Paper className={classes.paper}>
                    <Typography>
-                   Course site for {name}
+                   Course site for {courseInfoName}
                    </Typography>
                  </Paper>
                </Grid>
@@ -116,17 +116,17 @@ export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadli
                        <DialogTitle id="form-dialog-title">Add a To-Do</DialogTitle>
                        <DialogContent>
                          <TextField
-                           onChange={(event)=>onText(event.target.value)}
+                           onChange={(event)=>onTextCourseInfo(event.target.value)}
                            autoFocus
                            margin="dense"
                            id="name"
                            label="Name"
                            type="text"
                            fullWidth
-                           error={invalidName}
-                           helperText={invalidName?'Name taken':''}
+                           error={invalidNameCourseInfo}
+                           helperText={invalidNameCourseInfo?'Name taken':''}
                            onKeyPress={(ev) => {
-                              if (ev.key === 'Enter'&& !invalidName) {
+                              if (ev.key === 'Enter'&& !invalidNameCourseInfo) {
                                   handleCloseAdd()
                                   }
                                 }}/>
@@ -136,7 +136,7 @@ export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadli
                          <Button onClick={handleClose} color="primary">
                            Cancel
                          </Button>
-                         <Button onClick={handleCloseAdd}  disabled={invalidName}color="primary">
+                         <Button onClick={handleCloseAdd} disabled={invalidNameCourseInfo}color="primary">
                            Add
                          </Button>
                        </DialogActions>
@@ -156,7 +156,7 @@ export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadli
                              />
                            </ListItemIcon>
                            <ListItemText id={labelId} primary={value[0]} />
-                           <Button onClick={()=>{onRemove(value)}}>
+                           <Button onClick={()=>{onRemoveCourseInfo(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
                          </ListItem>
@@ -176,7 +176,7 @@ export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadli
                              />
                            </ListItemIcon>
                            <ListItemText id={labelId} primary={value[0]} />
-                           <Button onClick={()=>{onRemove(value)}}>
+                           <Button onClick={()=>{onRemoveCourseInfo(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
                          </ListItem>

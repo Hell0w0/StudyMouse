@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidName,invalidDate})=> {
+export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
@@ -132,10 +132,10 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type
                   id="name"
                   type="text"
                   fullWidth
-                  error={invalidName}
-                  helperText={invalidName?'Empty field':''}
+                  error={invalidDeadlineName}
+                  helperText={invalidDeadlineName?'Empty field':''}
                   onKeyPress={(ev) => {
-                            if (ev.key === 'Enter' && !invalidDate && !invalidName && today<date) {
+                            if (ev.key === 'Enter' && !invalidDate && !invalidDeadlineName && today<date) {
                                 handleCloseAdd()
                                 }
                               }}
@@ -144,7 +144,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type
                   Date
                 </InputLabel>
                 <TextField
-                  onChange={(event)=>onDate(event.target.value)}
+                  onChange={(event)=>{onDate(event.target.value)}}
                   autoFocus
                   placeholder="yyyy-mm-dd"
                   margin="dense"
@@ -154,7 +154,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type
                   error={invalidDate||today>date}
                   helperText={invalidDate?'Invalid input':today>date?'Date has passed':''}
                   onKeyPress={(ev) => {
-                            if (ev.key === 'Enter' && !invalidDate && !invalidName && today<date) {
+                            if (ev.key === 'Enter' && !invalidDate && !invalidDeadlineName && today<date) {
                                 handleCloseAdd()
                                 }
                               }}
@@ -166,7 +166,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type
                 <Button onClick={handleClose} color="primary">
                   Cancel
                 </Button>
-                <Button onClick={handleCloseAdd} disabled={invalidName||invalidDate||today>date} color="primary">
+                <Button onClick={handleCloseAdd} disabled={invalidDeadlineName||invalidDate||today>date} color="primary">
                   Add
                 </Button>
               </DialogActions>

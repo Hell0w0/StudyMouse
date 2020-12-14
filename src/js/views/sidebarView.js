@@ -84,6 +84,7 @@ export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, c
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
+
         </Drawer>
 
       </div>
