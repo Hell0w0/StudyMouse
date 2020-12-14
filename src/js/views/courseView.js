@@ -62,7 +62,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
   }));
 
 
-  export const CourseView=({onTextCourse,latest,addCourse,onCreateCourse,courses,remove,invalidNameCourse,goTo})=> {
+  export const CourseView=({onTextCourse,addCourse,latest,onCreateCourse,courses,remove,invalidNameCourse,goTo})=> {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [toRemove, setRemove] = React.useState(null);
@@ -102,7 +102,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
                         error={invalidNameCourse}
                         helperText={invalidNameCourse?'Course already added':''}
                         onKeyPress={(ev) => {
-                           if (ev.key === 'Enter' && !invalidName) {
+                           if (ev.key === 'Enter' && !invalidNameCourse) {
                                handleCloseAdd()
                                }
                              }}

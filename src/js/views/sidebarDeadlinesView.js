@@ -26,6 +26,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
+export const SidebarDeadlinesView=({noCourses,today,date,courses,latest,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
@@ -204,7 +205,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,courseType,type
            </TableHead>
            <TableBody>
              {deadlines.map((row) => (
-               <TableRow key={row}>
+               <TableRow key={row}  style={{background:latest===row[1]?fade('#555555', 0.06):"primary"}}>
                <TableCell component="th" scope="row"  style={{
                       whiteSpace: "normal",
                       wordWrap: "break-word"

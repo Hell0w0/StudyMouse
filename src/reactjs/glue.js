@@ -31,6 +31,7 @@ const GlueToModel= (View)=>
   const [invalidDeadlineName,setInvalidDeadlineName]= React.useState(true);
   const [noCourses,setNoCourses] = React.useState(false);
   const [deadlinesList, setDeadlinesList] = React.useState([]);
+  const [latestDeadline,setLatestDeadline] = React.useState("");
 
   //Reactfunctions for SidebarDeadlines
   /* Makes sure courseType is updated when currentcourse is chnaged*/
@@ -55,6 +56,14 @@ const GlueToModel= (View)=>
       React.useEffect(function(){
          setDeadlinesList(getCourses());
       }, [deadlines,sidebarType]);
+
+      React.useEffect(function(){
+      deadlines.forEach(ele=>ele.forEach(elem=>{
+        if(elem[2]<today){
+          model.removeDeadline(elem);
+        }
+      }))
+    });
 
   //Functions
   //CourseInfo
@@ -84,6 +93,8 @@ const GlueToModel= (View)=>
      let allDeadline=model.getAllDeadlines();
      return allDeadline
    }
+
+
 
 
 return h(View, {
@@ -121,11 +132,12 @@ return h(View, {
   invalidNameCourse:invalidName,
   courseName:courseName,
   remove:(e)=>{  model.removeCourse(e)},
-  onCreateCourse:()=>{setLatest(name);debugger;model.addCourse(name)},
+  onCreateCourse:()=>{setLatest(name);model.addCourse(name)},
   latest:latest,
   goTo:(course)=>{model.setCurrentCourse(course); window.location.hash="#course";},
   //CourseInfo
-  name:courseName,
+  courseInfoName:courseName,
+  deadlinesInfo:deadlines[index],
   checked:checked,
   unChecked:unChecked,
   onTextCourseInfo:(nam)=>{
@@ -149,6 +161,7 @@ return h(View, {
   deadlines:deadlinesList,
   onCreate:()=>{
    model.addDeadline(deadlineName,date,courseType);
+   setLatestDeadline(deadlineName)
    setDate("");
    setDeadlineName("");
    setInvalidDeadlineName(true);
@@ -170,6 +183,7 @@ return h(View, {
    else{setInvalidDate(true)}},
   today:today,
   date:date,
+  latestDeadline:latestDeadline,
   invalidDeadlineName:invalidDeadlineName,
   invalidDate:invalidDate,
 }

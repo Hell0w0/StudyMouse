@@ -71,7 +71,7 @@ check:{
 
 
 
-export const CourseInfoView= ({h,invalidNameCourseInfo,deadlines,onCreateCourseInfo,checked,onDeadlineRemove,unChecked,courseInfoName,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
+export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCourseInfo,checked,onDeadlineRemove,unChecked,courseInfoName,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
@@ -196,7 +196,7 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlines,onCreateCourseI
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {deadlines.map((row) => (
+                      {deadlinesInfo.map((row) => (
                         <TableRow key={row}>
                           <TableCell component="th" scope="row"  style={{
                                whiteSpace: "normal",
