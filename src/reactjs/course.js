@@ -4,11 +4,10 @@ import React from 'react';
 
 export default function Course({model,viewNav}) {
   const [name,setName] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
   const [invalidName,setInvalidName]=React.useState(false)
   const h= React.createElement;
   const courses = useModelProp(model, "courses");
-
+  const [latest,setLatest] = React.useState("");
   return h(CourseView, {
   onText:(nam)=> {setName(nam);
     courses.forEach(ele=>{
@@ -18,14 +17,13 @@ export default function Course({model,viewNav}) {
       setInvalidName(false)
     }
   })},
-  addCourse:()=> {model.addCourse(name)},
+  onCreate:()=> {model.addCourse(name)},
   courses:courses,
+  latest:latest,
+  name:name,
   invalidName:invalidName,
   remove:(e)=>{  model.removeCourse(e)},
-  handleClose:()=>setOpen(false),
-  handleClickOpen:()=>setOpen(true),
-  handleCloseAdd:()=>{setOpen(false);model.addCourse(name)},
-  open:open,
+  onCreate:()=>{model.addCourse(name);setLatest(name)},
   goTo:(course)=>{model.setCurrentCourse(course); viewNav()}
   });
   }

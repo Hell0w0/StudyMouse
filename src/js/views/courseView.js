@@ -4,23 +4,20 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {drawerWidth} from './../layoutVars.js';
 import {sidebarWidth} from './../layoutVars.js';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 
   const useStyles = makeStyles((theme) => ({
@@ -28,8 +25,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
       marginRight: theme.spacing(2),
     },
     appBar: {
-      width: `calc(100% - ${sidebarWidth}px )`,
-      marginLeft: sidebarWidth,
+
+          width: `calc(100% - ${sidebarWidth}px )`,
+          marginLeft: sidebarWidth,
+      zIndex: theme.zIndex.drawer + 1,
     },
     mainContent:{
       width:`calc(100% - ${drawerWidth}px- ${sidebarWidth}px)`,
@@ -63,8 +62,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
   }));
 
 
-  export const CourseView=({onText,addCourse,courses,remove,invalidName,open,handleClose,handleCloseAdd,handleClickOpen,goTo})=> {
+  export const CourseView=({onText,latest,addCourse,courses,remove,name,invalidName,onCreate,goTo})=> {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    const [toRemove, setRemove] = React.useState(null);
+    function handleClose(){setOpen(false)}
+    function handleClickOpen(){setOpen(true)}
+    function handleCloseAdd(){setOpen(false);onCreate()}
+    const [openVarning, setOpenVarning] = React.useState(false);
+    function handleCloseVarning(){setOpenVarning(false)}
+    function handleVarning(){setOpenVarning(true)}
     return (
       <React.Fragment>
         <CssBaseline />
@@ -94,7 +101,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                         autoFocus
                         error={invalidName}
                         helperText={invalidName?'Course already added':''}
-
+                        onKeyPress={(ev) => {
+                           if (ev.key === 'Enter' && !invalidName) {
+                               handleCloseAdd()
+                               }
+                             }}
                         margin="dense"
                         id="name"
                         label="Name"
@@ -118,10 +129,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
             <Grid container spacing={4}>
               {courses.map((card) => (
                 <Grid item key={card} xs={12} sm={6} md={4}>
-                  <Card className={classes.card}>
+                  <Card className={classes.card} style={{background:latest===card?fade('#555555', 0.06):"primary"}}>
 
                     <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5" component="h2">
+                      <Typography gutterBottom variant="h5" component="h2" style={{ wordWrap: "break-word" }}>
                         {card}
                       </Typography>
                     </CardContent>
@@ -129,9 +140,25 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                       <Button size="small" color="primary" onClick={(e)=>goTo(card)}>
                         View
                       </Button>
-                      <Button size="small" color="primary" onClick={(e)=>remove(card)}>
+                      <Button size="small" color="primary" onClick={(e)=>{handleVarning();setRemove(card)}}>
                         Remove
                       </Button>
+                      <Dialog open={openVarning} onClose={handleCloseVarning} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title" color="secondary">Warning!</DialogTitle>
+                        <DialogContent>
+                        <Typography>
+                          If you remove this course, all deadlines and to-do items assosiated with the course will be permanently deleted.
+                        </Typography>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleCloseVarning} color="primary">
+                            Back
+                          </Button>
+                          <Button onClick={()=>{setOpenVarning(false);remove(toRemove)}} color="secondary">
+                            Confirm
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </CardActions>
                   </Card>
                 </Grid>

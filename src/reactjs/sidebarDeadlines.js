@@ -3,7 +3,7 @@ import React from 'react';
 import useModelProp from './useModelProp.js';
 import CalendarSource from '../js/calendarSource.js';
 
-export default function SidebarDeadlines({model,err}) {
+export default function SidebarDeadlines({model}) {
   const coursesList = useModelProp(model,"courses");
   const deadlines = useModelProp(model,"deadlines");
   const currentCourse = useModelProp(model,"currentCourse");
@@ -21,7 +21,7 @@ export default function SidebarDeadlines({model,err}) {
 
 /* Makes sure courseType is updated when currentcourse is chnaged*/
     React.useEffect(function(){
-      if (currentCourse!=null && currentCourse!=courseType)
+      if (currentCourse!==null && currentCourse!==courseType)
        setCourseType(currentCourse);
     }, [currentCourse]);
 
@@ -31,12 +31,12 @@ export default function SidebarDeadlines({model,err}) {
 
 
     React.useEffect(function(){
-      if (coursesList.length==0)
+      if (coursesList.length===0)
         setNoCourses(true);
       else {
         setNoCourses(false);
       }
-    },[coursesList])
+    },[coursesList[0]])
 
  // Getcourseindex return -1 if name == All
    function getCourses() {
@@ -51,11 +51,19 @@ export default function SidebarDeadlines({model,err}) {
      setDeadlinesList(getCourses());
   }, [deadlines,sidebarType]);
 
+React.useEffect(function(){
+  deadlines.forEach(ele=>ele.forEach(elem=>{
+    if(elem[2]<today){
+      model.removeDeadline(elem);
+    }
+  }))
+})
 
 return h(SidebarDeadlinesView, {
 noCourses:noCourses,
 courseType:courseType,
 type:sidebarType,
+date:date,
 deadlines:deadlinesList,
 courses:coursesList,
 onCreate:()=>{
@@ -70,7 +78,7 @@ onCourseType:cou=>setCourseType(cou),
 onType: tp =>setSidebarType(tp),
 onRemove:e=>model.removeDeadline(e),
 onName:(nam)=> {
- if (nam!=""){
+ if (nam!==""){
  setInvalidName(false);
  setName(nam)}},
 onDate:(dat)=> {
@@ -86,10 +94,9 @@ function ValidateDate(dt,today){
  const striptoday=today.split("-")
  const stripdt= dt.split("-");
  const year = stripdt[0];
- if (year>=striptoday[0] && year.length==4){
- if (today<=dt){
+ if (year>=striptoday[0] && year.length===4){
    return true
- }}
+}
  else{
  return false;}
 }

@@ -6,25 +6,27 @@ import CanvasSource from '../js/canvasSource.js';
 import usePromiseJSON from './usePromiseJSON.js';
 import promiseNoData from '../js/views/promiseNoData.js';
 
-export function Sidebar({model, moveHome,moveCourses,moveBooks}) {
+export function Sidebar({model,moveCourses}) {
   const h= React.createElement;
   const [promise, setPromise]= React.useState(CanvasSource.getCourses());
   const [data, error]= usePromiseJSON(promise);
-  let currentIndex=0;
-  if (window.location.hash =="#home"){
-    currentIndex = 0;
-  }
-  else if (window.location.hash == "#courses") {
+  let currentIndex=1;
+
+  if (window.location.hash == "#courses") {
     currentIndex = 1;
+  }
+  else if (window.location.hash == "#settings") {
+    currentIndex = 3;
   }
   else{
     currentIndex = null;
   }
+
 return h(SidebarView, {
-moveHome:moveHome,
 moveCourses:moveCourses,
-moveBooks:moveBooks,
 currentIndex:currentIndex,
+username:firebase.auth().currentUser.displayName,
+userimage:firebase.auth().currentUser.photoURL,
 logOut:()=>{logOut()},
 canvasCourses:()=>{
   if(data!=null){

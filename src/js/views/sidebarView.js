@@ -7,17 +7,15 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {sidebarWidth} from './../layoutVars.js';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Avatar from '@material-ui/core/Avatar';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 
 const useStyles = makeStyles((theme) => ({
-
-    root: {
-      display: 'flex',
-
-      width: '100%',
-      maxWidth: sidebarWidth,
-      backgroundColor: theme.palette.background.paper,
-    },
+  root: {
+    display: 'flex',
+  },
   drawer: {
     width: sidebarWidth,
     flexShrink: 0,
@@ -25,16 +23,16 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: sidebarWidth,
   },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
+  drawerContainer: {
+    overflow: 'auto',
+  },
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
 }));
 
-export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, canvasCourses})=> {
+export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, canvasCourses})=> {
   const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = React.useState(currentIndex);
 
@@ -44,6 +42,8 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, 
 
     return (
       <div className={classes.root}>
+      <CssBaseline />
+
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -53,13 +53,15 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, 
         anchor="left"
       >
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem
-            button
-            selected={selectedIndex === 0}
-            onClick={(event) => {handleListItemClick(event, 0); moveHome()}}
-          >
-            <ListItemText primary="Home" />
-          </ListItem>
+        <ListItem>
+        <ListItemAvatar>
+        <Avatar src={userimage} sizes="small"/>
+        </ListItemAvatar>
+        </ListItem>
+        <ListItem>
+        <ListItemText primary={username} />
+        </ListItem>
+        <Divider/>
           <ListItem
             button
             selected={selectedIndex === 1}
@@ -67,26 +69,16 @@ export const SidebarView=({moveHome,moveCourses,moveBooks, currentIndex,logOut, 
           >
             <ListItemText primary="Courses" />
           </ListItem>
-        </List>
-        <List component="nav" aria-label="secondary mailbox folder">
-          <ListItem
-            button
-            selected={selectedIndex === 2}
-            onClick={(event) =>{ handleListItemClick(event, 2); moveBooks()}}
-          >
-            <ListItemText primary="Books" />
-          </ListItem>
           <Divider />
           <ListItem
             button
             selected={selectedIndex === 3}
-            onClick={(event) => handleListItemClick(event, 3), canvasCourses}
-          >
-            <ListItemText primary="Sync Canvas" />
+            onClick={(event) => {handleListItemClick(event, 3); canvasCourses()}}>
+            <ListItemText primary="Settings" />
           </ListItem>
           <ListItem
             button
-            selected={selectedIndex === 3}
+            selected={selectedIndex === 4}
             onClick={(event) =>{ handleListItemClick(event, 4); logOut()}}
           >
             <ListItemText primary="Logout" />

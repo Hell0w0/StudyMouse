@@ -6,6 +6,7 @@ export default function CourseInfo({model,coursesNav,errorNav}) {
   const courseName = useModelProp(model, "currentCourse");
   const index = model.getCourseIndex(courseName);
   const commentsList = useModelProp(model, "comments");
+  const deadlines= useModelProp(model,"deadlines");
   const [invalidName,setInvalidName] = React.useState(false);
   const [name,setName] = React.useState(null);
   const h= React.createElement;
@@ -33,18 +34,20 @@ return false
 
 return h(CourseInfoView, {
   name:courseName,
+  deadlines:deadlines[index],
   checked:checked,
   unChecked:unChecked,
-  onText:(nam)=>{
+  onText:(nam)=>{setName(nam)
       comments.forEach(ele=>{
       if(ele[0]===nam)
       setInvalidName(true);
       else{
         setInvalidName(false);
-        setName(nam)}
+        }
       })},
   invalidName:invalidName,
   onRemove:(e)=>model.removeComment(e),
+  onDeadlineRemove:(e)=>model.removeDeadline(e),
   onCreate:()=>model.addComment(name),
   onCheck:(value)=>model.checkBox(value),
   nav:coursesNav});

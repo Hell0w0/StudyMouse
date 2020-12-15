@@ -116,7 +116,8 @@ setDB(userId){
       const index = this.getCourseIndex(courseName);
       // this.deadlines[courseIndex] ger en lista [[courseName,name,date]]
       this.deadlines[index]=[[courseName,name,date],...this.deadlines[index]];
-      this.deadlines[index]=this.sortList(this.deadlines[index])
+      this.deadlines[index]=this.sortList(this.deadlines[index]);
+      this.deadlines=[...this.deadlines]
       this.notifyObservers();
     }
 
@@ -128,6 +129,8 @@ setDB(userId){
      if (index > -1) {
        this.deadlines[index].splice(itemIndex,1);
      }
+     this.deadlines=[...this.deadlines]
+
      this.notifyObservers();
    }
 
@@ -135,6 +138,7 @@ setDB(userId){
       //Currentcourse är namnet på valda kursen
       const index = this.getCourseIndex(this.currentCourse);
       this.comments[index]=[[text,false],...this.comments[index]];
+      this.comments=[...this.comments]
       this.notifyObservers();
     }
 
@@ -147,6 +151,7 @@ setDB(userId){
          this.comments[index][commentIndex][1]=true;
 
        }
+       this.comments=[...this.comments]
       this.notifyObservers();
     }
 
@@ -157,6 +162,8 @@ setDB(userId){
      if (index > -1) {
        this.comments[index].splice(itemIndex,1);
      }
+     this.comments=[...this.comments]
+
      this.notifyObservers();
    }
 
@@ -168,9 +175,7 @@ setDB(userId){
    getAllDeadlines(){
      var deadlineList=[];
      // deadlines     [courseName,Name,Date]
-     if(this.deadlines!=undefined){
        this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
-      }
      if (deadlineList.length==0){
        return []
      }

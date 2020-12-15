@@ -22,7 +22,12 @@ import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 import {drawerWidth} from './../layoutVars.js';
 import {sidebarWidth} from './../layoutVars.js';
@@ -66,7 +71,7 @@ check:{
 
 
 
-export const CourseInfoView= ({h,invalidName,onCreate,checked,unChecked,name,onText,onCheck,onRemove,nav}) =>{
+export const CourseInfoView= ({h,invalidName,deadlines,onCreate,checked,onDeadlineRemove,unChecked,name,onText,onCheck,onRemove,nav}) =>{
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
@@ -99,7 +104,7 @@ export const CourseInfoView= ({h,invalidName,onCreate,checked,unChecked,name,onT
                  </Paper>
                </Grid>
                {/* Recent Deposits */}
-               <Grid item xs={12} md={6} lg={5}>
+               <Grid item xs={12} md={7} lg={5}>
                  <Paper className={classes.paper}>
                  <List>
                  <ListItem>
@@ -120,19 +125,23 @@ export const CourseInfoView= ({h,invalidName,onCreate,checked,unChecked,name,onT
                            fullWidth
                            error={invalidName}
                            helperText={invalidName?'Name taken':''}
-                         />
+                           onKeyPress={(ev) => {
+                              if (ev.key === 'Enter'&& !invalidName) {
+                                  handleCloseAdd()
+                                  }
+                                }}/>
+
                        </DialogContent>
                        <DialogActions>
                          <Button onClick={handleClose} color="primary">
                            Cancel
                          </Button>
-                         <Button onClick={handleCloseAdd} disabled={invalidName}color="primary">
+                         <Button onClick={handleCloseAdd}  disabled={invalidName}color="primary">
                            Add
                          </Button>
                        </DialogActions>
                      </Dialog>
                  </ListItem>
-                 {/*TO-DO*/}
                      {unChecked.map((value) => {
                        const labelId = `checkbox-list-label-${value}`;
                        return (
@@ -175,6 +184,39 @@ export const CourseInfoView= ({h,invalidName,onCreate,checked,unChecked,name,onT
                      })}
                    </List>
                  </Paper>
+               </Grid>
+               <Grid item xs={12} md={7} lg={5}>
+                 <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right">Name</TableCell>
+                        <TableCell align="right">Deadline</TableCell>
+                        <TableCell  className={classes.small}> </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {deadlines.map((row) => (
+                        <TableRow key={row}>
+                          <TableCell component="th" scope="row"  style={{
+                               whiteSpace: "normal",
+                               wordWrap: "break-word"
+                             }}>
+                            {row[1]}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                           {row[2]}
+                          </TableCell>
+                          <TableCell  className={classes.small}>
+                          <Button onClick={()=>{onDeadlineRemove(row)}} size="small">
+                            <DeleteIcon className={classes.icon} />
+                          </Button>
+                          </TableCell>
+                        </TableRow>
+                   ))}
+                    </TableBody>
+                  </Table>
+                 </TableContainer>
                </Grid>
              </Grid>
           </Container>
