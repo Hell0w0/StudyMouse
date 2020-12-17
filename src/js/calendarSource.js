@@ -4,6 +4,8 @@ import {API_KEY} from './apiConfig.js';
 import {CLIENT_ID} from './apiConfig.js';
 import {readModel} from './readModel.js';
 
+import useModelProp from './../reactjs/useModelProp.js'
+
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 const SCOPES = "https://www.googleapis.com/auth/calendar";
 
@@ -62,7 +64,8 @@ function  updateCalender() {
       }
     }
     const model = readModel();
-    var deadlines = model.getAllDeadlines();
+
+    var deadlines = useModelProp(model,"deadlines");
     deadlines.forEach(item => {
       if(item[0]!=null&&item[1]!=null&&item[2]!=null){
       var newEvent = createEvent(item[1], item[2], item[0]);

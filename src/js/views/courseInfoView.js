@@ -71,13 +71,25 @@ check:{
 
 
 
-export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCourseInfo,checked,onDeadlineRemove,unChecked,courseInfoName,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
+export const CourseInfoView= ({h,invalidCommentName,index,deadlinesInfo,onCreateComment,comments,onRemove,currentCourse,onTextComment,onCheck,onRemoveComment,nav}) =>{
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
-  function handleClickOpen(){
-    setOpen(true)}
-  function handleCloseAdd(){setOpen(false);onCreateCourseInfo()}
+  function handleClickOpen(){setOpen(true)}
+  function handleCloseAdd(){setOpen(false);onCreateComment()}
+  if (deadlinesInfo===undefined)
+    deadlinesInfo=[]
+  /*Moves checked items to bottom of list.*/
+  let commentsList = comments[index];
+  let checked =[];
+  let unChecked = [];
+  if(commentsList!==undefined){
+      commentsList.forEach((ele)=>{
+      if (ele[1]===false)
+        unChecked.push([ele[0],ele[1],currentCourse])
+        else
+        checked.push([ele[0],ele[1],currentCourse])
+      })}
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -87,7 +99,7 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
           <ArrowBackIosIcon className={classes.icon} />
         </Button>
           <Typography variant="h6" noWrap>
-            {courseInfoName}
+            {currentCourse}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -95,16 +107,16 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
         <main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
              <Grid container spacing={2}>
-               {/* Chart */}
-               <Grid item xs={12} md={6} lg={5}>
+               {/* Name */}
+               <Grid item xs={12}>
                  <Paper className={classes.paper}>
-                   <Typography>
-                   Course site for {courseInfoName}
+                   <Typography align="center">
+                   Course site for {currentCourse}
                    </Typography>
                  </Paper>
                </Grid>
-               {/* Recent Deposits */}
-               <Grid item xs={12} md={7} lg={5}>
+               {/* To-do */}
+               <Grid item xs={6}>
                  <Paper className={classes.paper}>
                  <List>
                  <ListItem>
@@ -116,17 +128,17 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
                        <DialogTitle id="form-dialog-title">Add a To-Do</DialogTitle>
                        <DialogContent>
                          <TextField
-                           onChange={(event)=>onTextCourseInfo(event.target.value)}
+                           onChange={(event)=>onTextComment(event.target.value)}
                            autoFocus
                            margin="dense"
                            id="name"
                            label="Name"
                            type="text"
                            fullWidth
-                           error={invalidNameCourseInfo}
-                           helperText={invalidNameCourseInfo?'Name taken':''}
+                           error={invalidCommentName}
+                           helperText={invalidCommentName?'Name taken':''}
                            onKeyPress={(ev) => {
-                              if (ev.key === 'Enter'&& !invalidNameCourseInfo) {
+                              if (ev.key === 'Enter'&& !invalidCommentName) {
                                   handleCloseAdd()
                                   }
                                 }}/>
@@ -136,7 +148,7 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
                          <Button onClick={handleClose} color="primary">
                            Cancel
                          </Button>
-                         <Button onClick={handleCloseAdd} disabled={invalidNameCourseInfo}color="primary">
+                         <Button onClick={handleCloseAdd} disabled={invalidCommentName}color="primary">
                            Add
                          </Button>
                        </DialogActions>
@@ -156,7 +168,7 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
                              />
                            </ListItemIcon>
                            <ListItemText id={labelId} primary={value[0]} />
-                           <Button onClick={()=>{onRemoveCourseInfo(value)}}>
+                           <Button onClick={()=>{onRemoveComment(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
                          </ListItem>
@@ -176,7 +188,7 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
                              />
                            </ListItemIcon>
                            <ListItemText id={labelId} primary={value[0]} />
-                           <Button onClick={()=>{onRemoveCourseInfo(value)}}>
+                           <Button onClick={()=>{onRemoveComment(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
                          </ListItem>
@@ -185,7 +197,7 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
                    </List>
                  </Paper>
                </Grid>
-               <Grid item xs={12} md={7} lg={5}>
+               <Grid item xs={6}>
                  <TableContainer component={Paper}>
                   <Table aria-label="simple table">
                     <TableHead>
@@ -208,8 +220,8 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCou
                            {row[2]}
                           </TableCell>
                           <TableCell  className={classes.small}>
-                          <Button onClick={()=>{onDeadlineRemove(row)}} size="small">
-                            <DeleteIcon className={classes.icon} />
+                          <Button onClick={()=>{onRemove(row)}} size="small">
+                            <DeleteIcon className={classes.icon}/>
                           </Button>
                           </TableCell>
                         </TableRow>

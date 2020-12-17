@@ -16,12 +16,11 @@ const GlueToModel= (View)=>
   const [latest,setLatest] = React.useState("");
 
   //Courseinfo
-  const courseName = useModelProp(model, "currentCourse");
-  const index = model.getCourseIndex(courseName);
-  const commentsList = useModelProp(model, "comments");
-  const [invalidCourseInfoName,setInvalidCourseInfoName] = React.useState(false);
-  const [courseInfoName,setCourseInfoName] = React.useState(null);
-
+  const currentCourse = useModelProp(model, "currentCourse");
+  const index = model.getCourseIndex(currentCourse);
+  const comments = useModelProp(model, "comments");
+  const [invalidCommentName,setInvalidCommentName] = React.useState(false);
+  const [commentName,setCommentName] = React.useState(null);
   //SidebarDeadlines
   const [deadlineName,setDeadlineName]= React.useState("");
   const [date,setDate]= React.useState("");
@@ -30,15 +29,15 @@ const GlueToModel= (View)=>
   const [invalidDate,setInvalidDate]= React.useState(true);
   const [invalidDeadlineName,setInvalidDeadlineName]= React.useState(true);
   const [noCourses,setNoCourses] = React.useState(false);
-  const [deadlinesList, setDeadlinesList] = React.useState([]);
-  const [latestDeadline,setLatestDeadline] = React.useState("");
+  const [latestDeadline,setLatestDeadline] = React.useState([]);
+  const [deadlineIndex,setDeadlineIndex]=React.useState(-1)
 
   //Reactfunctions for SidebarDeadlines
   /* Makes sure courseType is updated when currentcourse is chnaged*/
       React.useEffect(function(){
-        if (courseName!==null && courseName!==courseType)
-         setCourseType(courseName);
-      }, [courseName]);
+        if (currentCourse!==null && currentCourse!==courseType)
+         setCourseType(currentCourse);
+      }, [currentCourse]);
 
       React.useEffect(function(){
         setCourseType(courses[0]);
@@ -54,10 +53,6 @@ const GlueToModel= (View)=>
       },[courses])
 
       React.useEffect(function(){
-         setDeadlinesList(getCourses());
-      }, [deadlines,sidebarType]);
-
-      React.useEffect(function(){
       deadlines.forEach(ele=>ele.forEach(elem=>{
         if(elem[2]<today){
           model.removeDeadline(elem);
@@ -66,44 +61,29 @@ const GlueToModel= (View)=>
     });
 
   //Functions
+React.useEffect(function(){
+  if (window.location.hash!=="#course")
+      model.setCurrentCourse(null)
+},[window.location.hash])
+
+
   //CourseInfo
-  if (courseName === null && window.location.hash==="#course"){
+  if (currentCourse === null && window.location.hash==="#course"){
   window.location.hash="#courses";
   return false};
-  /*Moves checked items to bottom of list.*/
-  let comments = commentsList[index];
-  let checked=[];
-  let unChecked=[];
-  if(comments!==undefined){
-    comments.forEach(ele=>{
-    if (ele[1]===true){
-      checked.push(ele);
-    }
-    else{
-      unChecked.push(ele);
-    }
-  });}
+
   //SidebarDeadlines
   let today = new Date().toISOString().slice(0, 10)
-
-  // Getcourseindex return -1 if name == All
-   function getCourses() {
-     const index = model.getCourseIndex(sidebarType);
-     if (index >= 0) return deadlines[index];
-     let allDeadline=model.getAllDeadlines();
-     return allDeadline
-   }
-
-
-
 
 return h(View, {
   //Sidebar
   moveCourses:()=> {window.location.hash="#courses";},
+  moveHome:()=> {window.location.hash="#home";},
+
   currentIndex:()=>{
     let currentIndex=0;
     if (window.location.hash === "#courses") {currentIndex = 1;}
-    else if (window.location.hash == "#settings") {
+    else if (window.location.hash === "#settings") {
       currentIndex = 3;
     }
     else{currentIndex = null;}},
@@ -130,47 +110,46 @@ return h(View, {
   addCourse:()=> {model.addCourse(name)},
   courses:courses,
   invalidNameCourse:invalidName,
-  courseName:courseName,
   remove:(e)=>{  model.removeCourse(e)},
   onCreateCourse:()=>{setLatest(name);model.addCourse(name)},
   latest:latest,
   goTo:(course)=>{model.setCurrentCourse(course); window.location.hash="#course";},
   //CourseInfo
-  courseInfoName:courseName,
+  currentCourse:currentCourse,
+  index:index,
+  comments:comments,
   deadlinesInfo:deadlines[index],
-  checked:checked,
-  unChecked:unChecked,
-  onTextCourseInfo:(nam)=>{
-      setCourseInfoName(nam);
-      if(comments!==undefined){comments.forEach(ele=>{
+  onTextComment:(nam)=>{
+      setCommentName(nam);
+      if(comments!==undefined){
+      comments.forEach(ele=>{
       if(ele[0]===nam)
-      setInvalidCourseInfoName(true);
-      else{
-        setInvalidCourseInfoName(false);
+      setInvalidCommentName(true);
         }
-      })}},
-  invalidNameCourseInfo:invalidCourseInfoName,
-  onRemoveCourseInfo:(e)=>model.removeComment(e),
-  onCreateCourseInfo:()=>model.addComment(courseInfoName),
+      )}},
+  invalidCommentName:invalidCommentName,
+  onRemoveComment:(e)=>{model.removeComment(e)},
+  onCreateComment:()=>{model.addComment(commentName,currentCourse===null?courseType:currentCourse);setInvalidCommentName(false)},
   onCheck:(value)=>model.checkBox(value),
   nav:()=>{window.location.hash="#courses";},
   //SidebarDeadlines
   noCourses:noCourses,
   courseType:courseType,
   type:sidebarType,
-  deadlines:deadlinesList,
+  deadlineIndex:deadlineIndex,
+  deadlines:deadlines,
   onCreate:()=>{
-   model.addDeadline(deadlineName,date,courseType);
-   setLatestDeadline(deadlineName)
+   model.addDeadline(courseType,deadlineName,date);
+   setLatestDeadline([courseType,deadlineName,date])
    setDate("");
    setDeadlineName("");
    setInvalidDeadlineName(true);
    setInvalidDate(true);
    CalendarSource.handleClientLoad();
   },
-  onCourseType:cou=>setCourseType(cou),
-  onType: tp =>setSidebarType(tp),
-  onRemove:e=>model.removeDeadline(e),
+  onCourseType:cou=>{setCourseType(cou)},
+  onType: tp =>{setSidebarType(tp);setDeadlineIndex(model.getCourseIndex(tp))},
+  onRemove:e=>{console.log("delete deadline");model.removeDeadline(e)},
   onName:(nam)=> {
    if (nam!==""){
    setInvalidDeadlineName(false);

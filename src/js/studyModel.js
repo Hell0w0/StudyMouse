@@ -1,13 +1,12 @@
 import firebase from './firebase.js'
 
 export class StudyModel{
-    constructor(courses=[],comments=[],deadlines=[[]],currentCourse=null,books=[]){
+    constructor(courses=[],comments=[],deadlines=[],currentCourse=null){
         this.courses=courses;
         this.subscribers=[];
         this.deadlines=deadlines;
         this.comments=comments;
         this.currentCourse=currentCourse;
-        this.books=books;
         this.bool=true;
        }
 
@@ -26,13 +25,10 @@ export class StudyModel{
         this.currentCourse = modelObject.currentCourse;
         if(modelObject.deadlines!==undefined){
           this.deadlines =modelObject.deadlines;
-        } else {this.deadlines=[[]];}
+        } else {this.deadlines=[];}
         if(modelObject.courses!==undefined){
           this.courses = modelObject.courses;
         } else {this.courses=[];}
-        if(modelObject.books!==undefined){
-          this.books = modelObject.books;
-        } else {this.books=[];}
       }
       //När sidan laddas finns det 4 subscribers och då laddar man om sidan
       //för att lägga in de nyinladdade kurserna som hämtats. Sedan lägger man
@@ -73,11 +69,6 @@ setDB(userId){
     });
   });
 }
-
-addBook(name, img, course){
-  this.books=[[name, img, course, []],...this.books]
-}
-
 
   addCourse(name){
     if(!this.courses.includes(name)){
@@ -122,8 +113,7 @@ addBook(name, img, course){
       this.notifyObservers();
     }
 
-    addDeadline(name,date,courseName){
-
+    addDeadline(courseName,name,date){
       const index = this.getCourseIndex(courseName);
       // this.deadlines[courseIndex] ger en lista [[courseName,name,date]]
       this.deadlines[index]=[[courseName,name,date],...this.deadlines[index]];
@@ -140,11 +130,8 @@ addBook(name, img, course){
 
 
    removeDeadline(deadline){
-
      const index=this.getCourseIndex(deadline[0]);
-     const itemIndex = this.deadlines[index].findIndex(function(item){
-       return item===deadline;
-     });
+     const itemIndex = this.deadlines[index].findIndex(item =>item[1]===deadline[1]&&item[2]===item[2]);
 
      if (itemIndex > -1) {
        this.deadlines[index].splice(itemIndex,1);
@@ -153,16 +140,17 @@ addBook(name, img, course){
      this.notifyObservers();
    }
 
-    addComment(text){
+    addComment(comment,courseName){
       //Currentcourse är namnet på valda kursen
-      const index = this.getCourseIndex(this.currentCourse);
-      this.comments[index]=[[text,false],...this.comments[index]];
+      const index = this.getCourseIndex(courseName);
+      this.comments[index]=[[comment,false],...this.comments[index]];
       this.comments=[...this.comments]
       this.notifyObservers();
     }
 
     checkBox(value){
-      const index=this.getCourseIndex(this.currentCourse);
+
+      const index=this.getCourseIndex(value[2]);
       const commentIndex = this.comments[index].findIndex(ele => ele[0]===value[0]);
       if (this.comments[index][commentIndex][1]===true)
        this.comments[index][commentIndex][1]=false;
@@ -174,12 +162,12 @@ addBook(name, img, course){
       this.notifyObservers();
     }
 
-   removeComment(com){
-     const index=this.getCourseIndex(this.currentCourse);
-     const itemIndex = this.comments[index].findIndex(ele => ele===com);
+   removeComment(comment){
+     const index=this.getCourseIndex(comment[2]);
+     const commentIndex = this.comments[index].findIndex(ele => ele[0]===comment[0]);
 
      if (index > -1) {
-       this.comments[index].splice(itemIndex,1);
+       this.comments[index].splice(commentIndex,1);
      }
      this.comments=[...this.comments]
 
@@ -190,24 +178,6 @@ addBook(name, img, course){
          const course = this.courses.findIndex(ele => ele===name);
          return course
      }
-
-   getAllDeadlines(){
-     var deadlineList=[];
-     // deadlines     [courseName,Name,Date]
-     if (this.deadlines===undefined)
-        return []
-    this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
-     if (deadlineList.length===0){
-       return []
-     }
-     deadlineList.sort(function(a,b){
-         if(a[2]<b[2])
-           return -1;
-         else if(a[2]>b[2])
-           return 1;
-       })
-     return deadlineList
-   }
 
   addObserver(callback){
    this.subscribers=this.subscribers.concat(callback);
@@ -220,7 +190,4 @@ addBook(name, img, course){
   try{callback()}catch(err){
         console.error("Error ", err, callback);}})
   }
-
-
-
 }
