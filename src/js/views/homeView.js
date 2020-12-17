@@ -52,7 +52,8 @@ paddingBottom: theme.spacing(4),
 },
 content: {
   flexGrow: 1,
-  padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(8, 0, 6),
 },
 paper: {
 padding: theme.spacing(2),
@@ -62,7 +63,6 @@ flexDirection: 'column',
 },
 check:{
 backgroundColor: fade('#555555', 0.06),
-
 },
 }));
 
@@ -97,12 +97,21 @@ return (
     </AppBar>
     <div className={classes.mainContent}>
       <main className={classes.content}>
+
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
         Study Mouse
+      </Typography>
+      <Typography align="center">
+      The best way to keep track of your studies!
+      </Typography>
+      </main>
+      <Typography align="center" component="h3">
+      To-do Overview
       </Typography>
       <Container maxWidth="lg" className={classes.container}>
              {/* To-do */}
                <Paper className={classes.paper}>
+
                <Table>
                <TableHead>
                  <TableRow>
@@ -181,10 +190,10 @@ return (
                              inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </TableCell>
-                          <TableCell>
+                          <TableCell  >
                             {value[2]}
                           </TableCell>
-                          <TableCell>
+                          <TableCell >
                           {value[0]}
                           </TableCell>
                           <TableCell>
@@ -198,7 +207,7 @@ return (
                  {checked.map((value) => {
                    const labelId = `checkbox-list-label-${value}`;
                    return (
-                     <TableRow key={value}>
+                     <TableRow key={value} className={classes.check}>
                      <TableCell>
                          <Checkbox
                            edge="start"
@@ -226,7 +235,6 @@ return (
                    </Table>
                </Paper>
         </Container>
-      </main>
   </div>
 </div>
 );

@@ -224,28 +224,28 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,l
         </div>
         <Divider />
 
-         <Table style={{ width: "auto", tableLayout: "auto" }}>
+         <Table >
            <TableHead>
              <TableRow>
-               <TableCell  width={150}>Course</TableCell>
-               <TableCell align="right"  width={80}>Name</TableCell>
-               <TableCell align="right"  width={50}>Deadline</TableCell>
-               <TableCell  className={classes.small}  width={50}> </TableCell>
+               <TableCell >Course</TableCell>
+               <TableCell >Name</TableCell>
+               <TableCell >Deadline</TableCell>
+               <TableCell> </TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
              {deadlinesList.map((row) => (
-               <TableRow key={row}  width={335}style={{background:latestDeadline[0]===row[0]&&latestDeadline[1]===row[1]&&latestDeadline[2]===row[2]?fade('#555555', 0.06):"primary"}}>
-               <TableCell component="th" scope="row" width={150}>
+               <TableRow key={row} style={{background:latestDeadline[0]===row[0]&&latestDeadline[1]===row[1]&&latestDeadline[2]===row[2]?fade('#555555', 0.06):"primary"}}>
+               <TableCell component="th" scope="row" style={{wordBreak: 'break-word'}}>
                  {row[0]}
                </TableCell>
-                 <TableCell component="th" scope="row" width={80}>
+                 <TableCell component="th" scope="row" style={{wordBreak: 'break-word'}}>
                    {row[1]}
                  </TableCell>
-                 <TableCell component="th" scope="row" width={50}>
+                 <TableCell component="th" scope="row">
                   {row[2]}
                  </TableCell>
-                 <TableCell width={50}>
+                 <TableCell>
                  <Button onClick={()=>{onRemove(row)}} size="small">
                    <DeleteIcon className={classes.icon} />
                  </Button>

@@ -167,7 +167,7 @@ export const CourseInfoView= ({h,invalidCommentName,index,deadlinesInfo,onCreate
                                inputProps={{ 'aria-labelledby': labelId }}
                              />
                            </ListItemIcon>
-                           <ListItemText id={labelId} primary={value[0]} />
+                           <ListItemText primary={value[0]} style={{whiteSpace: 'normal',wordBreak: 'break-word'}} id={labelId} />
                            <Button onClick={()=>{onRemoveComment(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
@@ -187,7 +187,7 @@ export const CourseInfoView= ({h,invalidCommentName,index,deadlinesInfo,onCreate
                                inputProps={{ 'aria-labelledby': labelId }}
                              />
                            </ListItemIcon>
-                           <ListItemText id={labelId} primary={value[0]} />
+                           <ListItemText primary={value[0]} style={{whiteSpace: 'normal',wordBreak: 'break-word'}} id={labelId} />
                            <Button onClick={()=>{onRemoveComment(value)}}>
                              <DeleteIcon className={classes.icon} />
                            </Button>
@@ -202,21 +202,18 @@ export const CourseInfoView= ({h,invalidCommentName,index,deadlinesInfo,onCreate
                   <Table aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell align="right">Name</TableCell>
-                        <TableCell align="right">Deadline</TableCell>
+                        <TableCell >Name</TableCell>
+                        <TableCell >Deadline</TableCell>
                         <TableCell  className={classes.small}> </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {deadlinesInfo.map((row) => (
                         <TableRow key={row}>
-                          <TableCell component="th" scope="row"  style={{
-                               whiteSpace: "normal",
-                               wordWrap: "break-word"
-                             }}>
-                            {row[1]}
+                          <TableCell component="th" scope="row" style={{whiteSpace: 'normal',wordBreak: 'break-word'}} >
+                               {row[1]}
                           </TableCell>
-                          <TableCell component="th" scope="row">
+                          <TableCell component="th" scope="row" style={{whiteSpace: 'normal',wordBreak: 'break-word'}}>
                            {row[2]}
                           </TableCell>
                           <TableCell  className={classes.small}>
