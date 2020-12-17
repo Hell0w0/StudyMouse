@@ -16,25 +16,22 @@ function Settings(){
 
 
 return h(SettingsView, {
-    handleClose:()=>setOpen(false),
-    handleClickOpen:()=>setOpen(true),
-    open:open,
     updateCourses:()=> {
       if(data!=null){
-        data.forEach(obj=>model.addCourse(obj.name))
-      }
+        data.forEach(obj=>model.addCourse(obj.name))}
+        window.location.hash="#courses"
     },
     updateFavouriteCourses:()=> {
       if(dataF!=null){
         dataF.forEach(obj=>model.addCourse(obj.name))
       }
+      window.location.hash="#courses"
+
     },
     setDefaultSource:()=>{
-      setOpen(false);
       setPromise(CanvasSource.getCourses());
       setPromiseF(CanvasSource.getFavouriteCourses())},
     setCustomSource:()=>{
-      setOpen(false);
       setPromise(CanvasSource.customGetCourses(key));
       setPromiseF(CanvasSource.customGetFavouriteCourses(key))},
     setKey:(input)=>{setKey(input)}

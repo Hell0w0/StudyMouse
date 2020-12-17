@@ -1,5 +1,4 @@
-
-  import React from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,8 +20,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 import {drawerWidth} from './../layoutVars.js';
 import {sidebarWidth} from './../layoutVars.js';
@@ -59,14 +63,14 @@ const useStyles = makeStyles((theme) => ({
   flexDirection: 'column',
 },
 check:{
-  backgroundColor: alpha('#555555', 0.06),
+  backgroundColor: fade('#555555', 0.06),
 
 },
 }));
 
 
 
-export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checked,unChecked,name,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
+export const CourseInfoView= ({h,invalidNameCourseInfo,deadlinesInfo,onCreateCourseInfo,checked,onRemove,unChecked,courseInfoName,onTextCourseInfo,onCheck,onRemoveCourseInfo,nav}) =>{
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
@@ -76,13 +80,13 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checke
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar} >
         <Toolbar>
         <Button onClick={nav}>
-          <ArrowBackIosIcon className={classes.icon} />
+          <ArrowBackIosIcon className={classes.icon} color="white"/>
         </Button>
           <Typography variant="h6" noWrap>
-            {name}
+            {courseInfoName}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -91,15 +95,15 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checke
         <Container maxWidth="lg" className={classes.container}>
              <Grid container spacing={2}>
                {/* Chart */}
-               <Grid item xs={12} md={6} lg={5}>
+               <Grid item xs={12}>
                  <Paper className={classes.paper}>
-                   <Typography>
-                   Course site for {name}
+                   <Typography align="center">
+                   Course site for {courseInfoName}
                    </Typography>
                  </Paper>
                </Grid>
                {/* Recent Deposits */}
-               <Grid item xs={12} md={6} lg={5}>
+               <Grid item xs={6}>
                  <Paper className={classes.paper}>
                  <List>
                  <ListItem>
@@ -120,7 +124,12 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checke
                            fullWidth
                            error={invalidNameCourseInfo}
                            helperText={invalidNameCourseInfo?'Name taken':''}
-                         />
+                           onKeyPress={(ev) => {
+                              if (ev.key === 'Enter'&& !invalidNameCourseInfo) {
+                                  handleCloseAdd()
+                                  }
+                                }}/>
+
                        </DialogContent>
                        <DialogActions>
                          <Button onClick={handleClose} color="primary">
@@ -132,7 +141,6 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checke
                        </DialogActions>
                      </Dialog>
                  </ListItem>
-                 {/*TO-DO*/}
                      {unChecked.map((value) => {
                        const labelId = `checkbox-list-label-${value}`;
                        return (
@@ -175,6 +183,39 @@ export const CourseInfoView= ({h,invalidNameCourseInfo,onCreateCourseInfo,checke
                      })}
                    </List>
                  </Paper>
+               </Grid>
+               <Grid item xs={6}>
+                 <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right">Name</TableCell>
+                        <TableCell align="right">Deadline</TableCell>
+                        <TableCell  className={classes.small}> </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {deadlinesInfo.map((row) => (
+                        <TableRow key={row}>
+                          <TableCell component="th" scope="row"  style={{
+                               whiteSpace: "normal",
+                               wordWrap: "break-word"
+                             }}>
+                            {row[1]}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                           {row[2]}
+                          </TableCell>
+                          <TableCell  className={classes.small}>
+                          <Button onClick={()=>{onRemove(row)}} size="small">
+                            <DeleteIcon className={classes.icon} />
+                          </Button>
+                          </TableCell>
+                        </TableRow>
+                   ))}
+                    </TableBody>
+                  </Table>
+                 </TableContainer>
                </Grid>
              </Grid>
           </Container>

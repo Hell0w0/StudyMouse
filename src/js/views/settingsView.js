@@ -1,6 +1,6 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -63,8 +63,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
   }));
 
 
-  export const SettingsView=({handleClose,handleClickOpen,handleCloseAdd,open,updateCourses,updateFavouriteCourses,setDefaultSource,setCustomSource,retrieveCourses,setKey})=> {
+  export const SettingsView=({updateCourses,updateFavouriteCourses,setDefaultSource,setCustomSource,retrieveCourses,setKey})=> {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    function handleClose(){setOpen(false)}
+    function handleClickOpen(){setOpen(true)}
+    function setCustom(){setOpen(false);setCustomSource()}
+    function setDefault(){setOpen(false);setDefaultSource()}
     return (
       <React.Fragment>
         <CssBaseline />
@@ -102,10 +107,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                       <Button onClick={handleClose} color="primary">
                         Cancel
                       </Button>
-                      <Button onClick={setDefaultSource} color="primary">
+                      <Button onClick={setDefault} color="primary">
                         Use Default Courses
                       </Button>
-                      <Button onClick={setCustomSource} color="primary">
+                      <Button onClick={setCustom} color="primary">
                         Get Custom Courses
                       </Button>
 

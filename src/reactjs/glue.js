@@ -10,10 +10,10 @@ const GlueToModel= (View)=>
   const model=React.useContext(ModelContext);
   //Course
   const [name,setName] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
   const [invalidName,setInvalidName]=React.useState(false)
   const courses = useModelProp(model, "courses");
   const deadlines = useModelProp(model,"deadlines");
+  const [latest,setLatest] = React.useState("");
 
   //Courseinfo
   const courseName = useModelProp(model, "currentCourse");
@@ -28,8 +28,10 @@ const GlueToModel= (View)=>
   const [courseType,setCourseType]= React.useState(courses[0]);
   const [sidebarType,setSidebarType]= React.useState("All");
   const [invalidDate,setInvalidDate]= React.useState(true);
+  const [invalidDeadlineName,setInvalidDeadlineName]= React.useState(true);
   const [noCourses,setNoCourses] = React.useState(false);
   const [deadlinesList, setDeadlinesList] = React.useState([]);
+  const [latestDeadline,setLatestDeadline] = React.useState("");
 
   //Reactfunctions for SidebarDeadlines
   /* Makes sure courseType is updated when currentcourse is chnaged*/
@@ -55,8 +57,16 @@ const GlueToModel= (View)=>
          setDeadlinesList(getCourses());
       }, [deadlines,sidebarType]);
 
+      React.useEffect(function(){
+      deadlines.forEach(ele=>ele.forEach(elem=>{
+        if(elem[2]<today){
+          model.removeDeadline(elem);
+        }
+      }))
+    });
+
   //Functions
-  //Sidebar
+  //CourseInfo
   if (courseName === null && window.location.hash==="#course"){
   window.location.hash="#courses";
   return false};
@@ -85,15 +95,21 @@ const GlueToModel= (View)=>
    }
 
 
+
+
 return h(View, {
   //Sidebar
-  moveHome:()=> {window.location.hash="#home";},
   moveCourses:()=> {window.location.hash="#courses";},
   currentIndex:()=>{
     let currentIndex=0;
-    if (window.location.hash ==="#home"){currentIndex = 0;}
-    else if (window.location.hash === "#courses") {currentIndex = 1;}
+    if (window.location.hash === "#courses") {currentIndex = 1;}
+    else if (window.location.hash == "#settings") {
+      currentIndex = 3;
+    }
     else{currentIndex = null;}},
+  username:firebase.auth().currentUser.displayName,
+  userimage:firebase.auth().currentUser.photoURL,
+
   logOut:()=>{
     firebase.auth().signOut().then(() => {
       console.log("+")
@@ -114,14 +130,14 @@ return h(View, {
   addCourse:()=> {model.addCourse(name)},
   courses:courses,
   invalidNameCourse:invalidName,
+  courseName:courseName,
   remove:(e)=>{  model.removeCourse(e)},
-  handleClose:()=>setOpen(false),
-  handleClickOpen:()=>setOpen(true),
-  handleCloseAdd:()=>{setOpen(false);model.addCourse(name)},
-  open:open,
+  onCreateCourse:()=>{setLatest(name);model.addCourse(name)},
+  latest:latest,
   goTo:(course)=>{model.setCurrentCourse(course); window.location.hash="#course";},
   //CourseInfo
-  name:courseName,
+  courseInfoName:courseName,
+  deadlinesInfo:deadlines[index],
   checked:checked,
   unChecked:unChecked,
   onTextCourseInfo:(nam)=>{
@@ -129,13 +145,10 @@ return h(View, {
       if(comments!==undefined){comments.forEach(ele=>{
       if(ele[0]===nam)
       setInvalidCourseInfoName(true);
-      else{
-        setInvalidCourseInfoName(false);
-        }
       })}},
   invalidNameCourseInfo:invalidCourseInfoName,
   onRemoveCourseInfo:(e)=>model.removeComment(e),
-  onCreateCourseInfo:()=>model.addComment(courseInfoName),
+  onCreateCourseInfo:()=>{model.addComment(courseInfoName);setInvalidCourseInfoName(false);},
   onCheck:(value)=>model.checkBox(value),
   nav:()=>{window.location.hash="#courses";},
   //SidebarDeadlines
@@ -145,9 +158,10 @@ return h(View, {
   deadlines:deadlinesList,
   onCreate:()=>{
    model.addDeadline(deadlineName,date,courseType);
+   setLatestDeadline(deadlineName)
    setDate("");
    setDeadlineName("");
-   setInvalidName(true);
+   setInvalidDeadlineName(true);
    setInvalidDate(true);
    CalendarSource.handleClientLoad();
   },
@@ -156,29 +170,30 @@ return h(View, {
   onRemove:e=>model.removeDeadline(e),
   onName:(nam)=> {
    if (nam!==""){
-   setInvalidName(false);
-   setDeadlineName(nam)}},
+   setInvalidDeadlineName(false);
+   setDeadlineName(nam)}
+ else{setInvalidDeadlineName(true)}},
   onDate:(dat)=> {
    if (ValidateDate(dat,today)) {
      setInvalidDate(false);
-     setDate(dat)}},
+     setDate(dat)}
+   else{setInvalidDate(true)}},
   today:today,
-  invalidName:invalidName,
+  date:date,
+  latestDeadline:latestDeadline,
+  invalidDeadlineName:invalidDeadlineName,
   invalidDate:invalidDate,
-  onHome:()=>{window.location.hash="#home";},
-  profilePicture:firebase.auth().currentUser.photoURL
 }
-);}
+);
 
 function ValidateDate(dt,today){
  const striptoday=today.split("-")
  const stripdt= dt.split("-");
  const year = stripdt[0];
  if (year>=striptoday[0] && year.length==4){
- if (today<=dt){
    return true
- }}
+ }
  else{
- return false;}
+ return false;}}
 }
 export default GlueToModel;

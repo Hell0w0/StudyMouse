@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -26,14 +25,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 4,
     width: drawerWidth,
   },
   drawer: {
@@ -43,7 +42,15 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-
+  filter:{
+    marginLeft:10,
+  },
+  menu:{
+  width: 200,
+  },
+  formControl:{
+    minWidth: 120,
+  },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
@@ -51,15 +58,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
-
+  cellDeadline:{
+    maxWidth: 95,
+  },
 }));
 
-export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidName,invalidDate})=> {
+export const SidebarDeadlinesView=({noCourses,today,date,courses,latest,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   function handleClose(){setOpen(false)}
-  function handleClickOpen(){
-    setOpen(true)}
+  function handleClickOpen(){setOpen(true)}
   function handleCloseAdd(){setOpen(false);onCreate()}
   return (
     <div className={classes.root}>
@@ -67,14 +75,11 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
 
         {/*Header*/}
 
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar} >
         <Toolbar>
           <Typography variant="h6" noWrap>
             Deadlines
           </Typography>
-
-            {/*New Deadline Button/Window*/}
-
         </Toolbar>
       </AppBar>
 
@@ -88,12 +93,35 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
         }}
         anchor="right"
       >
+      {/*New Deadline Button/Window*/}
 
         <div className={classes.toolbar} />
+
+        <div align="center">
         <Button onClick={handleClickOpen} variant="outlined" disabled={noCourses}>Add deadline</Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">New deadline</DialogTitle>
               <DialogContent>
+              <FormControl className={classes.formControl}>
+                <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+                  Course
+                </InputLabel>
+                <Select
+                  value={courseType}
+                  labelId="demo-simple-select-placeholder-label-label"
+                  id="demo-simple-select-placeholder-label"
+                  onChange={(event)=>{onCourseType(event.target.value)}}
+
+                >
+                {courses.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+
+
+                </Select>
+              </FormControl>
               <InputLabel shrink id="name">
                 Name
               </InputLabel>
@@ -104,55 +132,47 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
                   id="name"
                   type="text"
                   fullWidth
-                  error={invalidName}
-                  helperText={invalidName?'Empty field':''}
+                  error={invalidDeadlineName}
+                  helperText={invalidDeadlineName?'Empty field':''}
+                  onKeyPress={(ev) => {
+                            if (ev.key === 'Enter' && !invalidDate && !invalidDeadlineName && today<date) {
+                                handleCloseAdd()
+                                }
+                              }}
                 />
                 <InputLabel shrink id="date">
                   Date
                 </InputLabel>
                 <TextField
-                  onChange={(event)=>onDate(event.target.value)}
+                  onChange={(event)=>{onDate(event.target.value)}}
                   autoFocus
                   placeholder="yyyy-mm-dd"
                   margin="dense"
                   min={today}
                   id="date"
                   type="date"
-                  error={invalidDate}
-                  helperText={invalidDate?'Invalid input':''}
+                  error={invalidDate||today>date}
+                  helperText={invalidDate?'Invalid input':today>date?'Date has passed':''}
+                  onKeyPress={(ev) => {
+                            if (ev.key === 'Enter' && !invalidDate && !invalidDeadlineName && today<date) {
+                                handleCloseAdd()
+                                }
+                              }}
                   fullWidth
                 />
-                <FormControl className={classes.formControl}>
-                  <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                    Course
-                  </InputLabel>
-                  <Select
-                    value={courseType}
-                    labelId="demo-simple-select-placeholder-label-label"
-                    id="demo-simple-select-placeholder-label"
-                    onChange={(event)=>{onCourseType(event.target.value)}}
-                  >
-                  {courses.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
 
-
-                  </Select>
-                </FormControl>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
                   Cancel
                 </Button>
-                <Button onClick={handleCloseAdd} disabled={invalidName||invalidDate} color="primary">
+                <Button onClick={handleCloseAdd} disabled={invalidDeadlineName||invalidDate||today>date} color="primary">
                   Add
                 </Button>
               </DialogActions>
             </Dialog>
-        <Divider />
-        <div>
+          </div>
+        <div className={classes.filter}>
         Filter:
         <span> </span>
         <Select
@@ -168,27 +188,36 @@ export const SidebarDeadlinesView=({noCourses,today,courses,courseType,type,onTy
           </MenuItem>
         ))}
         </Select>
+
         </div>
+        <Divider />
+
         <TableContainer component={Paper}>
-         <Table aria-label="simple table">
+         <Table aria-label="simple table" style={{ width: 'auto', tableLayout: 'auto' }}>
            <TableHead>
              <TableRow>
                <TableCell>Course</TableCell>
-               <TableCell align="right">Name</TableCell>
-               <TableCell align="right">Deadline</TableCell>
+               <TableCell>Name</TableCell>
+               <TableCell>Deadline</TableCell>
                <TableCell  className={classes.small}> </TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
              {deadlines.map((row) => (
-               <TableRow key={row}>
-               <TableCell component="th" scope="row">
+               <TableRow key={row}  style={{background:latest===row[1]?fade('#555555', 0.06):"primary"}}>
+               <TableCell className={classes.cellDeadline}  component="th" scope="row"  style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word"
+                    }}>
                  {row[0]}
                </TableCell>
-                 <TableCell component="th" scope="row">
+                 <TableCell className={classes.cellDeadline}component="th" scope="row"  style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word"
+                    }}>
                    {row[1]}
                  </TableCell>
-                 <TableCell component="th" scope="row">
+                 <TableCell  className={classes.cellDeadline}component="th" scope="row">
                   {row[2]}
                  </TableCell>
                  <TableCell  className={classes.small}>

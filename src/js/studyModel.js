@@ -127,7 +127,12 @@ addBook(name, img, course){
       const index = this.getCourseIndex(courseName);
       // this.deadlines[courseIndex] ger en lista [[courseName,name,date]]
       this.deadlines[index]=[[courseName,name,date],...this.deadlines[index]];
-      this.deadlines[index]=this.sortList(this.deadlines[index])
+      this.deadlines[index].sort(function(a,b){
+          if(a[2]<b[2])
+            return -1;
+          else if(a[2]>b[2])
+            return 1;
+        })
       //dont touch or everything breaks
       this.deadlines=[...this.deadlines];
       this.notifyObservers();
@@ -152,6 +157,7 @@ addBook(name, img, course){
       //Currentcourse är namnet på valda kursen
       const index = this.getCourseIndex(this.currentCourse);
       this.comments[index]=[[text,false],...this.comments[index]];
+      this.comments=[...this.comments]
       this.notifyObservers();
     }
 
@@ -164,6 +170,7 @@ addBook(name, img, course){
          this.comments[index][commentIndex][1]=true;
 
        }
+       this.comments=[...this.comments]
       this.notifyObservers();
     }
 
@@ -174,6 +181,8 @@ addBook(name, img, course){
      if (index > -1) {
        this.comments[index].splice(itemIndex,1);
      }
+     this.comments=[...this.comments]
+
      this.notifyObservers();
    }
 
@@ -185,9 +194,9 @@ addBook(name, img, course){
    getAllDeadlines(){
      var deadlineList=[];
      // deadlines     [courseName,Name,Date]
-     if(this.deadlines!==undefined){
-       this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
-      }
+     if (this.deadlines===undefined)
+        return []
+    this.deadlines.forEach(elemen => elemen.forEach(ele=>deadlineList.push(ele)));
      if (deadlineList.length===0){
        return []
      }
@@ -212,17 +221,6 @@ addBook(name, img, course){
         console.error("Error ", err, callback);}})
   }
 
-  sortList(list){
-  //element[1] === [courseName,namn,date]
-  const sorted=list
 
-  return sorted;
-}
-
-  sortAllDeadlines(list){
-    const sorted=list
-
-    return sorted;
-  }
 
 }
