@@ -1,26 +1,19 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {drawerWidth} from './../layoutVars.js';
 import {sidebarWidth} from './../layoutVars.js';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Box from '@material-ui/core/Box';
 
 
   const useStyles = makeStyles((theme) => ({
@@ -65,6 +58,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
   export const SettingsView=({updateCourses,updateFavouriteCourses,setDefaultSource,setCustomSource,retrieveCourses,setKey})=> {
     const classes = useStyles();
+    const [buttonDisabled,setButtonDisabled]=React.useState(true)
     const [open, setOpen] = React.useState(false);
     function handleClose(){setOpen(false)}
     function handleClickOpen(){setOpen(true)}
@@ -87,14 +81,23 @@ import DialogTitle from '@material-ui/core/DialogTitle';
               <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                 Settings
               </Typography>
+              <Typography>
+              To access canvas courses you need to activate a custom key from canvas.
+              </Typography>
+              <Typography component={'span'}>
+               <Box fontWeight="fontWeightBold">Go to your canvas site, Account - Settings - New Accesstoken</Box>
+              </Typography>
+              <Typography>
+               Fill out the requested information and enter this token as your custom api key.
+              </Typography>
                 <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                       Enter Custom API Key
                   </Button>
                   <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Add new course</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Get canvas courses</DialogTitle>
                     <DialogContent>
                       <TextField
-                        onChange={(event)=>setKey(event.target.value)}
+                        onChange={(event)=>{setKey(event.target.value);event.target.value!==""?setButtonDisabled(false):setButtonDisabled(true)}}
                         autoFocus
                         margin="dense"
                         id="Canvas_API_Key"
@@ -110,7 +113,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
                       <Button onClick={setDefault} color="primary">
                         Use Default Courses
                       </Button>
-                      <Button onClick={setCustom} color="primary">
+                      <Button onClick={setCustom} disabled={buttonDisabled}color="primary">
                         Get Custom Courses
                       </Button>
 

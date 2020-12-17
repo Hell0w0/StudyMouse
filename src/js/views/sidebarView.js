@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, canvasCourses})=> {
+export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, moveHome,canvasCourses})=> {
   const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = React.useState(currentIndex);
 
@@ -53,12 +53,12 @@ export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, c
       >
         <List component="nav" aria-label="main mailbox folders">
         <ListItem>
-        <ListItemAvatar >
-        <Avatar onClick={()=>{canvasCourses()}} src={userimage} sizes="small"/>
+        <ListItemAvatar align="center">
+        <Avatar src={userimage} sizes="small" align="center"/>
         </ListItemAvatar>
         </ListItem>
-        <ListItem >
-        <ListItemText onClick={()=>{canvasCourses()}} primary={username} />
+        <ListItem button onClick={moveHome}>
+        <ListItemText primary={username} />
         </ListItem>
         <Divider/>
           <ListItem

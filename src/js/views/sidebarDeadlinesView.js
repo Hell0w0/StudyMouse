@@ -47,9 +47,13 @@ const useStyles = makeStyles((theme) => ({
   },
   menu:{
   width: 200,
-  },
+},
+add:{
+marginTop: 10,
+},
   formControl:{
     minWidth: 120,
+
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -60,15 +64,45 @@ const useStyles = makeStyles((theme) => ({
   },
   cellDeadline:{
     maxWidth: 95,
+    wordWrap: 'break-word',
   },
 }));
 
-export const SidebarDeadlinesView=({noCourses,today,date,courses,latest,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
+export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,latestDeadline,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [deadlinesList, setDeadlinesList] = React.useState([]);
   function handleClose(){setOpen(false)}
   function handleClickOpen(){setOpen(true)}
   function handleCloseAdd(){setOpen(false);onCreate()}
+  // Getcourseindex return -1 if name == All
+   function getCourses() {
+     if (deadlineIndex >= 0) return setDeadlinesList(deadlines[deadlineIndex]);
+     setDeadlinesList(getAllDeadlines())
+   }
+
+  function getAllDeadlines(){
+    var list=[];
+    // deadlines     [courseName,Name,Date]
+    if (deadlines===undefined)
+       return []
+   deadlines.forEach(elemen => elemen.forEach(ele=>ele.length>0?list.push(ele):list=list));
+    if (list.length===0){
+      return []
+    }
+    list.sort(function(a,b){
+        if(a[2]<b[2])
+          return -1;
+        else if(a[2]>b[2])
+          return 1;
+      })
+    return list
+  }
+
+  React.useEffect(function(){
+     getCourses();
+  }, [deadlineIndex,deadlines]);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -98,7 +132,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,latest,courseTy
         <div className={classes.toolbar} />
 
         <div align="center">
-        <Button onClick={handleClickOpen} variant="outlined" disabled={noCourses}>Add deadline</Button>
+        <Button onClick={handleClickOpen} variant="outlined" disabled={noCourses} className={classes.add}>Add deadline</Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">New deadline</DialogTitle>
               <DialogContent>
@@ -192,35 +226,28 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,latest,courseTy
         </div>
         <Divider />
 
-        <TableContainer component={Paper}>
-         <Table aria-label="simple table" style={{ width: 'auto', tableLayout: 'auto' }}>
+         <Table style={{ width: "auto", tableLayout: "auto" }}>
            <TableHead>
              <TableRow>
                <TableCell>Course</TableCell>
-               <TableCell>Name</TableCell>
-               <TableCell>Deadline</TableCell>
-               <TableCell  className={classes.small}> </TableCell>
+               <TableCell align="right">Name</TableCell>
+               <TableCell align="right">Deadline</TableCell>
+               <TableCell  className={classes.small}  width={50}> </TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
-             {deadlines.map((row) => (
-               <TableRow key={row}  style={{background:latest===row[1]?fade('#555555', 0.06):"primary"}}>
-               <TableCell className={classes.cellDeadline}  component="th" scope="row"  style={{
-                      whiteSpace: "normal",
-                      wordWrap: "break-word"
-                    }}>
+             {deadlinesList.map((row) => (
+               <TableRow key={row}  width={335}style={{background:latestDeadline[0]===row[0]&&latestDeadline[1]===row[1]&&latestDeadline[2]===row[2]?fade('#555555', 0.06):"primary"}}>
+               <TableCell component="th" scope="row" className={classes.cellDeadline}>
                  {row[0]}
                </TableCell>
-                 <TableCell className={classes.cellDeadline}component="th" scope="row"  style={{
-                      whiteSpace: "normal",
-                      wordWrap: "break-word"
-                    }}>
+                 <TableCell component="th" scope="row" className={classes.cellDeadline}>
                    {row[1]}
                  </TableCell>
-                 <TableCell  className={classes.cellDeadline}component="th" scope="row">
+                 <TableCell component="th" scope="row" className={classes.cellDeadline}>
                   {row[2]}
                  </TableCell>
-                 <TableCell  className={classes.small}>
+                 <TableCell width={50}>
                  <Button onClick={()=>{onRemove(row)}} size="small">
                    <DeleteIcon className={classes.icon} />
                  </Button>
@@ -229,7 +256,6 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,latest,courseTy
           ))}
            </TableBody>
          </Table>
-        </TableContainer>
       </Drawer>
     </div>
   );
