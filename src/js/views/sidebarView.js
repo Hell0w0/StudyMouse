@@ -57,7 +57,9 @@ export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, m
         <Avatar src={userimage} sizes="small" align="center"/>
         </ListItemAvatar>
         </ListItem>
-        <ListItem button onClick={moveHome}>
+        <ListItem button
+        onClick={(event) =>{ handleListItemClick(event, 0); moveHome()}}
+        selected={selectedIndex === 0}>
         <ListItemText primary={username} />
         </ListItem>
         <Divider/>

@@ -3,6 +3,8 @@ import firebase from './../js/firebase.js';
 import useModelProp from './useModelProp.js';
 import CalendarSource from '../js/calendarSource.js';
 import ModelContext from './modelContext.js';
+import CanvasSource from '../js/canvasSource.js';
+import usePromiseJSON from './usePromiseJSON.js';
 const h= React.createElement;
 
 const GlueToModel= (View)=>
@@ -85,6 +87,9 @@ return h(View, {
     if (window.location.hash === "#courses") {currentIndex = 1;}
     else if (window.location.hash === "#settings") {
       currentIndex = 3;
+    }
+    else if (window.location.hash === "#home") {
+      currentIndex = 0;
     }
     else{currentIndex = null;}},
   username:firebase.auth().currentUser.displayName,
@@ -179,3 +184,36 @@ function ValidateDate(dt,today){
  return false;}}
 }
 export default GlueToModel;
+
+const GlueToSetting=(View)=>{
+  const model=React.useContext(ModelContext);
+  const [promise, setPromise]= React.useState(CanvasSource.getCourses());
+  const [data, error]= usePromiseJSON(promise);
+  const [promiseF, setPromiseF]= React.useState(CanvasSource.getFavouriteCourses());
+  const [dataF, errorF]= usePromiseJSON(promiseF);
+  const [key, setKey] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+
+  return h(View, {
+      updateCourses:()=> {
+        if(data!=null){
+          data.forEach(obj=>model.addCourse(obj.name))}
+          window.location.hash="#courses"
+      },
+      updateFavouriteCourses:()=> {
+        if(dataF!=null){
+          dataF.forEach(obj=>model.addCourse(obj.name))
+        }
+        window.location.hash="#courses"
+
+      },
+      setDefaultSource:()=>{
+        setPromise(CanvasSource.getCourses());
+        setPromiseF(CanvasSource.getFavouriteCourses())},
+      setCustomSource:()=>{
+        setPromise(CanvasSource.customGetCourses(key));
+        setPromiseF(CanvasSource.customGetFavouriteCourses(key))},
+      setKey:(input)=>{setKey(input)}
+    })
+}
+export {GlueToSetting};
