@@ -1,5 +1,4 @@
-
-  import React from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -93,10 +92,10 @@ export const CourseInfoView= ({h,invalidCommentName,index,deadlinesInfo,onCreate
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar} >
         <Toolbar>
         <Button onClick={nav}>
-          <ArrowBackIosIcon className={classes.icon} />
+          <ArrowBackIosIcon className={classes.icon}/>
         </Button>
           <Typography variant="h6" noWrap>
             {currentCourse}

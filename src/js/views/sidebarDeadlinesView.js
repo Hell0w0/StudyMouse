@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -63,7 +62,10 @@ marginTop: 10,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
-
+  cellDeadline:{
+    maxWidth: 95,
+    wordWrap: 'break-word',
+  },
 }));
 
 export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,latestDeadline,courseType,type,onType,onRemove,onDate,onCourseType,deadlines,onCreate,onName,invalidDeadlineName,invalidDate})=> {
@@ -227,22 +229,22 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,l
          <Table >
            <TableHead>
              <TableRow>
-               <TableCell >Course</TableCell>
-               <TableCell >Name</TableCell>
-               <TableCell >Deadline</TableCell>
-               <TableCell> </TableCell>
+               <TableCell>Course</TableCell>
+               <TableCell align="right">Name</TableCell>
+               <TableCell align="right">Deadline</TableCell>
+               <TableCell  className={classes.small}  width={50}> </TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
              {deadlinesList.map((row) => (
-               <TableRow key={row} style={{background:latestDeadline[0]===row[0]&&latestDeadline[1]===row[1]&&latestDeadline[2]===row[2]?fade('#555555', 0.06):"primary"}}>
-               <TableCell component="th" scope="row" style={{wordBreak: 'break-word'}}>
+               <TableRow key={row}  width={335}style={{background:latestDeadline[0]===row[0]&&latestDeadline[1]===row[1]&&latestDeadline[2]===row[2]?fade('#555555', 0.06):"primary"}}>
+               <TableCell component="th" scope="row" className={classes.cellDeadline}>
                  {row[0]}
                </TableCell>
-                 <TableCell component="th" scope="row" style={{wordBreak: 'break-word'}}>
+                 <TableCell component="th" scope="row" className={classes.cellDeadline}>
                    {row[1]}
                  </TableCell>
-                 <TableCell component="th" scope="row">
+                 <TableCell component="th" scope="row" className={classes.cellDeadline}>
                   {row[2]}
                  </TableCell>
                  <TableCell>

@@ -136,7 +136,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small" color="primary" onClick={(e)=>goTo(card)}>
+                      <Button size="small" color="primary" onClick={(e)=>{goTo(card)}}>
                         View
                       </Button>
                       <Button size="small" color="primary" onClick={(e)=>{handleVarning();setRemove(card)}}>

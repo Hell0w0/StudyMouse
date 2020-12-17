@@ -24,7 +24,7 @@ defaultRoute();
 export function defaultRoute(){
     if(!["#course","#courses","#settings","#home"].find(knownRoute=>
     knownRoute===window.location.hash))
-	window.location.hash="#home";
+	window.location.hash="#courses";
 }
 
 export default App;

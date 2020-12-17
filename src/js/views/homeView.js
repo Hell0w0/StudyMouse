@@ -105,13 +105,13 @@ return (
       The best way to keep track of your studies!
       </Typography>
       </main>
-      <Typography align="center" component="h3">
-      To-do Overview
-      </Typography>
+
       <Container maxWidth="lg" className={classes.container}>
              {/* To-do */}
                <Paper className={classes.paper}>
-
+               <Typography align="center" component="h2"variant="h5" >
+               To-do Overview
+               </Typography>
                <Table>
                <TableHead>
                  <TableRow>
@@ -190,10 +190,10 @@ return (
                              inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </TableCell>
-                          <TableCell  >
+                          <TableCell style={{whiteSpace: 'normal',wordBreak: 'break-word'}} >
                             {value[2]}
                           </TableCell>
-                          <TableCell >
+                          <TableCell style={{whiteSpace: 'normal',wordBreak: 'break-word'}}>
                           {value[0]}
                           </TableCell>
                           <TableCell>
