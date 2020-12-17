@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SidebarView=({moveCourses,username,userimage,currentIndex,logOut, moveHome,canvasCourses})=> {
   const classes = useStyles();
-    const [selectedIndex, setSelectedIndex] = React.useState(currentIndex);
+  const [selectedIndex, setSelectedIndex] = React.useState(currentIndex());
 
     const handleListItemClick = (event, index) => {
       setSelectedIndex(index);

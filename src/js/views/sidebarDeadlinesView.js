@@ -9,10 +9,8 @@ import Divider from '@material-ui/core/Divider';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import {drawerWidth} from './../layoutVars.js';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -75,7 +73,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,l
   function handleClose(){setOpen(false)}
   function handleClickOpen(){setOpen(true)}
   function handleCloseAdd(){setOpen(false);onCreate()}
-  // Getcourseindex return -1 if name == All
+  // deadlineIndex is used to keep track if filter is all or spesific list of deadlines.
    function getCourses() {
      if (deadlineIndex >= 0) return setDeadlinesList(deadlines[deadlineIndex]);
      setDeadlinesList(getAllDeadlines())
@@ -86,7 +84,7 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,l
     // deadlines     [courseName,Name,Date]
     if (deadlines===undefined)
        return []
-   deadlines.forEach(elemen => elemen.forEach(ele=>ele.length>0?list.push(ele):list=list));
+   deadlines.forEach(elemen => elemen.forEach(ele=>{if(ele.length>0)list.push(ele)}));
     if (list.length===0){
       return []
     }
@@ -95,6 +93,9 @@ export const SidebarDeadlinesView=({noCourses,today,date,courses,deadlineIndex,l
           return -1;
         else if(a[2]>b[2])
           return 1;
+        else {
+          return 1
+        }
       })
     return list
   }

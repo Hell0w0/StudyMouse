@@ -33,7 +33,6 @@ const GlueToModel= (View)=>
   const [noCourses,setNoCourses] = React.useState(false);
   const [latestDeadline,setLatestDeadline] = React.useState([]);
   const [deadlineIndex,setDeadlineIndex]=React.useState(-1)
-
   //Reactfunctions for SidebarDeadlines
   /* Makes sure courseType is updated when currentcourse is chnaged*/
       React.useEffect(function(){
@@ -81,20 +80,17 @@ return h(View, {
   //Sidebar
   moveCourses:()=> {window.location.hash="#courses";},
   moveHome:()=> {window.location.hash="#home";},
-
-  currentIndex:()=>{
-    let currentIndex=0;
-    if (window.location.hash === "#courses") {currentIndex = 1;}
-    else if (window.location.hash === "#settings") {
-      currentIndex = 3;
-    }
-    else if (window.location.hash === "#home") {
-      currentIndex = 0;
-    }
-    else{currentIndex = null;}},
   username:firebase.auth().currentUser.displayName,
   userimage:firebase.auth().currentUser.photoURL,
-
+  currentIndex:()=>{
+     if (window.location.hash === "#courses") {return 1;}
+     else if (window.location.hash === "#settings") {
+       return 3;
+     }
+     else if (window.location.hash === "#home") {
+       return 0;
+     }
+     else{return null;}},
   logOut:()=>{
     firebase.auth().signOut().then(() => {
       console.log("+")
@@ -177,7 +173,7 @@ function ValidateDate(dt,today){
  const striptoday=today.split("-")
  const stripdt= dt.split("-");
  const year = stripdt[0];
- if (year>=striptoday[0] && year.length==4){
+ if (year>=striptoday[0] && year.length===4){
    return true
  }
  else{
@@ -192,7 +188,6 @@ const GlueToSetting=(View)=>{
   const [promiseF, setPromiseF]= React.useState(CanvasSource.getFavouriteCourses());
   const [dataF, errorF]= usePromiseJSON(promiseF);
   const [key, setKey] = React.useState("");
-  const [open, setOpen] = React.useState(false);
 
   return h(View, {
       updateCourses:()=> {
