@@ -142,6 +142,9 @@ setDB(userId){
      this.deadlines=[...this.deadlines];
      this.notifyObservers();
    }
+   getDeadlines(){
+     return this.deadlines;
+   }
 
     addComment(comment,courseName){
       //Currentcourse är namnet på valda kursen

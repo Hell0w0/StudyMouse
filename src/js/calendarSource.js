@@ -54,26 +54,26 @@ function  updateCalender() {
       var i = 0;
       for (i = 0; i < events.length; i++) {
         var event = events[i];
-        var when = event.start.dateTime;
+        var when = event.start.date;
         if (!when) {
           when = event.start.date;
         }
         eventSummary =[event.summary, ...eventSummary]
-        eventSummary =[event.start.dateTime, ...eventSummary]
+        eventSummary =[event.start.date, ...eventSummary]
         eventSummary =[event.description, ...eventSummary]
       }
     }
     const model = readModel();
-
-    var deadlines = useModelProp(model,"deadlines");
-    deadlines.forEach(item => {
+    var deadlines = model.getDeadlines();
+    deadlines.forEach(course=> {
+      course.forEach(item => {
       if(item[0]!=null&&item[1]!=null&&item[2]!=null){
       var newEvent = createEvent(item[1], item[2], item[0]);
       if(!(eventSummary.includes(newEvent.summary)&&eventSummary.includes(newEvent.description)&&eventSummary.includes(newEvent.start.date))){
         postEvent(newEvent);
       }
     }
-    })
+  })})
 
   });
 }
