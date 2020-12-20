@@ -93,9 +93,7 @@ return h(View, {
      else{return null;}},
   logOut:()=>{
     firebase.auth().signOut().then(() => {
-      console.log("+")
     }, function (error) {
-      console.log("-")
     });
   },
   canvasCourses:()=>{window.location.hash="#settings";},
@@ -150,7 +148,7 @@ return h(View, {
   },
   onCourseType:cou=>{setCourseType(cou)},
   onType: tp =>{setSidebarType(tp);setDeadlineIndex(model.getCourseIndex(tp))},
-  onRemove:e=>{console.log("delete deadline");model.removeDeadline(e)},
+  onRemove:e=>{model.removeDeadline(e)},
   onName:(nam)=> {
    if (nam!==""){
    setInvalidDeadlineName(false);
@@ -182,12 +180,12 @@ function ValidateDate(dt,today){
 export default GlueToModel;
 
 const GlueToSetting=(View)=>{
-  const model=React.useContext(ModelContext);
   const [promise, setPromise]= React.useState(CanvasSource.getCourses());
   const [data, error]= usePromiseJSON(promise);
   const [promiseF, setPromiseF]= React.useState(CanvasSource.getFavouriteCourses());
   const [dataF, errorF]= usePromiseJSON(promiseF);
   const [key, setKey] = React.useState("");
+  const model=React.useContext(ModelContext);
 
   return h(View, {
       updateCourses:()=> {

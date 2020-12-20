@@ -27,7 +27,7 @@ var initClient=(function(){
   // Handle the initial sign-in state.
   updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
 }, (error)=> {
-  console.log(JSON.stringify(error, null, 2))
+
 });
 })
 
@@ -101,7 +101,7 @@ function postEvent(event){
   });
 
   request.execute(function(event) {
-    console.log('Event created: ' + event.htmlLink + '\n');
+    //console.log('Event created: ' + event.htmlLink + '\n');
   });
 }
 
